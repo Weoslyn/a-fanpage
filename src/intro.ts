@@ -15,6 +15,7 @@ export const setupIntroExperience = () => {
   const drawerItems = document.querySelector<HTMLElement>("#drawer-items");
   const drawerClose = document.querySelector<HTMLButtonElement>("#drawer-close");
   const continueButton = document.querySelector<HTMLButtonElement>("#continue-button");
+  const introBack = document.querySelector<HTMLButtonElement>("#intro-back");
   const continuationBack = document.querySelector<HTMLButtonElement>("#continuation-back");
   const hotspots = Array.from(
     document.querySelectorAll<HTMLButtonElement>(".portrait-hotspot"),
@@ -33,6 +34,7 @@ export const setupIntroExperience = () => {
     !drawerItems ||
     !drawerClose ||
     !continueButton ||
+    !introBack ||
     !continuationBack
   ) {
     return;
@@ -174,6 +176,10 @@ export const setupIntroExperience = () => {
     if (supportsHover.matches && !lockedCategory) closeDrawer();
   });
   drawerClose.addEventListener("click", () => closeDrawer(true));
+  introBack.addEventListener("click", () => {
+    closeDrawer(true);
+    app.classList.remove("is-third-page");
+  });
   continueButton.addEventListener("click", () => {
     app.classList.add("is-fourth-page");
   });

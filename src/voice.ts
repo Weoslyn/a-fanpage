@@ -1,4 +1,5 @@
 import { requestMotionPermission, subscribeToDeviceTilt } from "./motion";
+import { setupRain } from "./rain";
 
 type VoiceTrack = {
   title: string;
@@ -19,8 +20,19 @@ export const setupVoiceExperience = () => {
   const continueButton =
     document.querySelector<HTMLButtonElement>("#voice-continue-button");
   const status = document.querySelector<HTMLElement>("#voice-status");
+  const rainBack = document.querySelector<HTMLCanvasElement>("#rain-canvas-back");
+  const rainFront = document.querySelector<HTMLCanvasElement>("#rain-canvas-front");
 
-  if (!app || !stage || !figure || !trackList || !continueButton || !status) return;
+  if (
+    !app ||
+    !stage ||
+    !figure ||
+    !trackList ||
+    !continueButton ||
+    !status ||
+    !rainBack ||
+    !rainFront
+  ) return;
 
   figure.style.setProperty(
     "--voice-image",
@@ -115,6 +127,15 @@ export const setupVoiceExperience = () => {
       tilt.targetX = x * -8;
       tilt.targetY = y * 10;
     },
+  );
+
+  setupRain(
+    stage,
+    rainBack,
+    rainFront,
+    () =>
+      app.classList.contains("is-voice-page") &&
+      !app.classList.contains("is-third-page"),
   );
 
   continueButton.addEventListener("click", async () => {

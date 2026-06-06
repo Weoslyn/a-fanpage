@@ -41,6 +41,7 @@
       <button id="reset-button" class="reset" type="button">RESET</button>
       <div id="brush-cursor" class="brush-cursor" aria-hidden="true"></div>
       <section id="voice-stage" class="voice-stage" aria-label="Albert 语音档案">
+        <canvas id="rain-canvas-back" class="rain-canvas rain-canvas--back" aria-hidden="true"></canvas>
         <header class="voice-header">
           <p>VOICE ARCHIVE / ALBERT</p>
           <p id="voice-status">SELECT A VOICE NOTE</p>
@@ -52,6 +53,7 @@
           </div>
           <div id="voice-track-list" class="voice-track-list"></div>
         </div>
+        <canvas id="rain-canvas-front" class="rain-canvas rain-canvas--front" aria-hidden="true"></canvas>
         <footer class="voice-footer">
           <p>10 VOICE NOTES / PENDING AUDIO</p>
           <p>FAN ARCHIVE / 2026</p>
@@ -67,6 +69,10 @@
         </button>
       </section>
       <section id="intro-stage" class="intro-stage" aria-label="Albert 人物介绍">
+        <button id="intro-back" class="intro-back" type="button" aria-label="返回语音档案">
+          <span aria-hidden="true">←</span>
+          <span>BACK</span>
+        </button>
         <canvas id="smoke-canvas-back" class="smoke-canvas smoke-canvas--back" aria-hidden="true"></canvas>
         <div class="id-stream" aria-hidden="true">
           <div>
