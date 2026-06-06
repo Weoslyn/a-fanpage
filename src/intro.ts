@@ -210,6 +210,12 @@ export const setupIntroExperience = () => {
     figure.style.setProperty("--shadow-y", `${(12 + tilt.x * 0.9).toFixed(2)}px`);
     figure.style.setProperty("--shadow-back-x", `${(tilt.y * 1.2).toFixed(2)}px`);
     figure.style.setProperty("--shadow-back-y", `${(6 + tilt.x * 0.45).toFixed(2)}px`);
+    stage.style.setProperty("--intro-page-x", `${(tilt.y * 1.4).toFixed(2)}px`);
+    stage.style.setProperty("--intro-page-y", `${(-tilt.x * 1.1).toFixed(2)}px`);
+    stage.style.setProperty("--intro-grid-x", `${(tilt.y * -2).toFixed(2)}px`);
+    stage.style.setProperty("--intro-grid-y", `${(tilt.x * 1.7).toFixed(2)}px`);
+    stage.style.setProperty("--intro-id-x", `${(tilt.y * -0.72).toFixed(2)}px`);
+    stage.style.setProperty("--intro-id-y", `${(tilt.x * 0.58).toFixed(2)}px`);
 
     requestAnimationFrame(render);
   };

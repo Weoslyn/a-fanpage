@@ -46,8 +46,8 @@ export const setupRain = (
     });
     backContext.setTransform(dpr, 0, 0, dpr, 0, 0);
     frontContext.setTransform(dpr, 0, 0, dpr, 0, 0);
-    backDrops = createDrops(isMobile ? 42 : 72, width, height, false);
-    frontDrops = createDrops(isMobile ? 26 : 48, width, height, true);
+    backDrops = createDrops(isMobile ? 94 : 138, width, height, false);
+    frontDrops = createDrops(isMobile ? 62 : 92, width, height, true);
   };
 
   const drawLayer = (

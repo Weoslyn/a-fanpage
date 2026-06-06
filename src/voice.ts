@@ -153,6 +153,10 @@ export const setupVoiceExperience = () => {
     figure.style.setProperty("--voice-shift-y", `${(tilt.x * 0.55).toFixed(2)}px`);
     trackList.style.setProperty("--orbit-x", `${(tilt.y * 0.6).toFixed(2)}px`);
     trackList.style.setProperty("--orbit-y", `${(-tilt.x * 0.5).toFixed(2)}px`);
+    stage.style.setProperty("--voice-page-x", `${(tilt.y * 1.35).toFixed(2)}px`);
+    stage.style.setProperty("--voice-page-y", `${(-tilt.x * 1.05).toFixed(2)}px`);
+    stage.style.setProperty("--voice-grid-x", `${(tilt.y * -2.1).toFixed(2)}px`);
+    stage.style.setProperty("--voice-grid-y", `${(tilt.x * 1.8).toFixed(2)}px`);
     requestAnimationFrame(render);
   };
 
