@@ -25,6 +25,7 @@ const simulationShader = `#version 300 es
   uniform vec2 uVelocity;
   uniform float uInject;
   uniform float uTime;
+  uniform float uWaterMode;
   in vec2 vUv;
   out vec4 outColor;
 
@@ -37,8 +38,11 @@ const simulationShader = `#version 300 es
     vec2 curl = vec2(
       sin((vUv.y + uTime * 0.025) * 17.0),
       cos((vUv.x - uTime * 0.018) * 13.0)
-    ) * 0.0009;
-    vec2 tracedUv = vUv - velocity * uTexel * 2.8 - curl;
+    ) * 0.0009 * mix(1.0, 0.14, uWaterMode);
+    vec2 tracedUv =
+      vUv -
+      velocity * uTexel * mix(2.8, 1.55, uWaterMode) -
+      curl;
 
     vec4 center = texture(uPrevious, tracedUv);
     float blurred =
@@ -46,16 +50,25 @@ const simulationShader = `#version 300 es
       texture(uPrevious, tracedUv - vec2(uTexel.x, 0.0)).r +
       texture(uPrevious, tracedUv + vec2(0.0, uTexel.y)).r +
       texture(uPrevious, tracedUv - vec2(0.0, uTexel.y)).r;
-    float density = mix(center.r, blurred * 0.25, 0.085) * 0.992;
-    velocity *= 0.984;
-    velocity += curl * 28.0;
+    float density = mix(
+      center.r,
+      blurred * 0.25,
+      mix(0.085, 0.18, uWaterMode)
+    ) * mix(0.992, 0.987, uWaterMode);
+    velocity *= mix(0.984, 0.955, uWaterMode);
+    velocity += curl * mix(28.0, 5.0, uWaterMode);
 
     float distanceToPointer = distance(vUv, uPointer);
-    float splat = exp(-distanceToPointer * distanceToPointer * 460.0) * uInject;
-    density = min(1.0, density + splat * 0.48);
-    velocity += uVelocity * splat * 0.82;
+    float splat = exp(
+      -distanceToPointer * distanceToPointer * mix(460.0, 215.0, uWaterMode)
+    ) * uInject;
+    density = min(1.0, density + splat * mix(0.48, 0.6, uWaterMode));
+    velocity += uVelocity * splat * mix(0.82, 0.34, uWaterMode);
 
-    float grain = (hash(vUv * 480.0 + uTime * 0.01) - 0.5) * 0.004;
+    float grain =
+      (hash(vUv * 480.0 + uTime * 0.01) - 0.5) *
+      0.004 *
+      (1.0 - uWaterMode);
     outColor = vec4(max(density + grain * density, 0.0), velocity * 0.5 + 0.5, 1.0);
   }
 `;
@@ -79,16 +92,17 @@ const displayShader = `#version 300 es
       texture(uFluid, vUv - vec2(0.0, uTexel.y * 3.0)).r * 0.13;
     float alpha = smoothstep(0.014, 0.44, softDensity) * 0.86;
     vec3 smoke = mix(vec3(0.48), vec3(0.82), smoothstep(0.08, 0.7, softDensity));
-    float edge = smoothstep(0.015, 0.18, softDensity) -
-      smoothstep(0.22, 0.62, softDensity);
+    float waterBody = smoothstep(0.16, 0.34, softDensity);
+    float edge = smoothstep(0.11, 0.23, softDensity) -
+      smoothstep(0.28, 0.46, softDensity);
     vec3 water = mix(
-      vec3(0.16, 0.25, 0.29),
-      vec3(0.88, 0.94, 0.95),
-      clamp(softDensity * 1.08 + edge * 0.92, 0.0, 1.0)
+      vec3(0.22, 0.31, 0.34),
+      vec3(0.82, 0.89, 0.9),
+      clamp(waterBody * 0.7 + edge * 0.72, 0.0, 1.0)
     );
     float waterAlpha =
-      smoothstep(0.01, 0.34, softDensity) * 0.72 +
-      max(edge, 0.0) * 0.58;
+      waterBody * 0.76 +
+      max(edge, 0.0) * 0.42;
     outColor = mix(
       vec4(smoke, alpha),
       vec4(water, clamp(waterAlpha, 0.0, 0.82)),
@@ -298,6 +312,10 @@ export const setupFluidCursor = (
           : 0,
     );
     gl.uniform1f(gl.getUniformLocation(simulationProgram, "uTime"), time * 0.001);
+    gl.uniform1f(
+      gl.getUniformLocation(simulationProgram, "uWaterMode"),
+      mode === "water" ? 1 : 0,
+    );
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     pointer.previousX += (pointer.x - pointer.previousX) * 0.42;
     pointer.previousY += (pointer.y - pointer.previousY) * 0.42;
