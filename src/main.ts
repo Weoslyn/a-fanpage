@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { APP_CONFIG, GESTURE_CONFIG } from "./config";
 import { setupIntroExperience } from "./intro";
+import { setupVoiceExperience } from "./voice";
 import { compositeFragmentShader, fullscreenVertexShader } from "./shaders";
 import "./style.css";
 
@@ -123,7 +124,7 @@ const init = async () => {
         app.classList.add("is-falling");
       }, GESTURE_CONFIG.archiveHoldDuration + GESTURE_CONFIG.fallDelay),
       window.setTimeout(() => {
-        app.classList.add("is-third-page");
+        app.classList.add("is-voice-page");
       }, GESTURE_CONFIG.archiveHoldDuration + GESTURE_CONFIG.fallDelay + GESTURE_CONFIG.fallDuration),
     );
   };
@@ -284,6 +285,7 @@ const init = async () => {
       "is-name-focused",
       "are-lines-visible",
       "is-falling",
+      "is-voice-page",
       "is-third-page",
       "is-fourth-page",
     );
@@ -332,6 +334,7 @@ const init = async () => {
 };
 
 setupIntroExperience();
+setupVoiceExperience();
 
 init().catch((error: unknown) => {
   console.error("Failed to initialize the reveal experience.", error);

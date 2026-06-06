@@ -40,7 +40,33 @@
       </div>
       <button id="reset-button" class="reset" type="button">RESET</button>
       <div id="brush-cursor" class="brush-cursor" aria-hidden="true"></div>
-      <section id="intro-stage" class="third-page intro-stage" aria-label="Albert 人物介绍">
+      <section id="voice-stage" class="voice-stage" aria-label="Albert 语音档案">
+        <header class="voice-header">
+          <p>VOICE ARCHIVE / ALBERT</p>
+          <p id="voice-status">SELECT A VOICE NOTE</p>
+        </header>
+        <div class="voice-scene">
+          <div class="voice-figure">
+            <div class="voice-figure-shadow" aria-hidden="true"></div>
+            <img src="%BASE_URL%images/a-full.png" alt="Albert 黑色西装全身动漫形象" />
+          </div>
+          <div id="voice-track-list" class="voice-track-list"></div>
+        </div>
+        <footer class="voice-footer">
+          <p>10 VOICE NOTES / PENDING AUDIO</p>
+          <p>FAN ARCHIVE / 2026</p>
+        </footer>
+        <button
+          id="voice-continue-button"
+          class="voice-continue-button"
+          type="button"
+          aria-label="进入人物互动页"
+        >
+          <span>PORTRAIT ARCHIVE</span>
+          <b aria-hidden="true">→</b>
+        </button>
+      </section>
+      <section id="intro-stage" class="intro-stage" aria-label="Albert 人物介绍">
         <canvas id="smoke-canvas-back" class="smoke-canvas smoke-canvas--back" aria-hidden="true"></canvas>
         <div class="id-stream" aria-hidden="true">
           <div>

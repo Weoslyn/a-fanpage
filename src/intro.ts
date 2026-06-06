@@ -1,5 +1,6 @@
 import { ARCHIVE_CONTENT, type ArchiveCategory } from "./config";
 import { setupFluidCursor } from "./fluid";
+import { subscribeToDeviceTilt } from "./motion";
 
 export const setupIntroExperience = () => {
   const app = document.querySelector<HTMLElement>("#app");
@@ -155,6 +156,16 @@ export const setupIntroExperience = () => {
     pointer.active = true;
     setFigureTilt(event.clientX, event.clientY);
   });
+
+  subscribeToDeviceTilt(
+    () =>
+      app.classList.contains("is-third-page") &&
+      !app.classList.contains("is-fourth-page"),
+    (x, y) => {
+      tilt.targetX = x * -9;
+      tilt.targetY = y * 11;
+    },
+  );
 
   drawer.addEventListener("pointerenter", () => {
     pointer.active = false;
