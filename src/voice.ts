@@ -1,5 +1,6 @@
 import { requestMotionPermission, subscribeToDeviceTilt } from "./motion";
 import { setupRain } from "./rain";
+import { setupFluidCursor } from "./fluid";
 
 type VoiceTrack = {
   title: string;
@@ -22,6 +23,8 @@ export const setupVoiceExperience = () => {
   const status = document.querySelector<HTMLElement>("#voice-status");
   const rainBack = document.querySelector<HTMLCanvasElement>("#rain-canvas-back");
   const rainFront = document.querySelector<HTMLCanvasElement>("#rain-canvas-front");
+  const smokeBack = document.querySelector<HTMLCanvasElement>("#voice-smoke-back");
+  const smokeFront = document.querySelector<HTMLCanvasElement>("#voice-smoke-front");
 
   if (
     !app ||
@@ -31,7 +34,9 @@ export const setupVoiceExperience = () => {
     !continueButton ||
     !status ||
     !rainBack ||
-    !rainFront
+    !rainFront ||
+    !smokeBack ||
+    !smokeFront
   ) return;
 
   figure.style.setProperty(
@@ -133,6 +138,15 @@ export const setupVoiceExperience = () => {
     stage,
     rainBack,
     rainFront,
+    () =>
+      app.classList.contains("is-voice-page") &&
+      !app.classList.contains("is-third-page"),
+  );
+
+  setupFluidCursor(
+    stage,
+    smokeBack,
+    smokeFront,
     () =>
       app.classList.contains("is-voice-page") &&
       !app.classList.contains("is-third-page"),

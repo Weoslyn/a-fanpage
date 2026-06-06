@@ -406,6 +406,7 @@ h1 {
 }
 
 .voice-stage {
+  background: #c7c9c6;
   opacity: 0;
   transform: translateY(100vh);
   transition: transform 1100ms cubic-bezier(.22, 1, .36, 1), opacity 400ms ease;
@@ -452,6 +453,26 @@ h1 {
   z-index: 6;
   opacity: .9;
   filter: contrast(1.08);
+}
+
+.voice-smoke {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.voice-smoke--back {
+  z-index: 2;
+  opacity: .8;
+  filter: blur(5px) grayscale(1) brightness(.62) contrast(1.28);
+  mix-blend-mode: multiply;
+}
+
+.voice-smoke--front {
+  z-index: 6;
+  opacity: .58;
+  filter: blur(2px) grayscale(1) brightness(.66) contrast(1.24);
+  mix-blend-mode: multiply;
 }
 
 .voice-header,
@@ -645,17 +666,17 @@ h1 {
 .voice-track[data-position="3"] { top: 49%; left: 4%; }
 .voice-track[data-position="4"] { top: 70%; left: 1%; }
 .voice-track[data-position="5"] { bottom: 2%; left: 11%; }
-.voice-track[data-position="6"] { top: 8%; right: 5%; }
-.voice-track[data-position="7"] { top: 27%; right: 1%; }
-.voice-track[data-position="8"] { top: 49%; right: 4%; }
-.voice-track[data-position="9"] { top: 70%; right: 1%; }
-.voice-track[data-position="10"] { right: 11%; bottom: 2%; }
+.voice-track[data-position="6"] { top: 12%; right: 5%; }
+.voice-track[data-position="7"] { top: 31%; right: 1%; }
+.voice-track[data-position="8"] { top: 52%; right: 4%; }
+.voice-track[data-position="9"] { top: 72%; right: 1%; }
+.voice-track[data-position="10"] { top: 84%; right: 11%; }
 
 .voice-continue-button {
   position: absolute;
   z-index: 9;
   right: clamp(18px, 2.6vw, 38px);
-  bottom: clamp(48px, 6vw, 72px);
+  top: clamp(48px, 5.6vw, 72px);
   display: flex;
   gap: 12px;
   align-items: center;
@@ -1346,15 +1367,15 @@ a.media-strip:hover {
   .voice-track[data-position="3"] { top: 41%; left: 3px; }
   .voice-track[data-position="4"] { top: 59%; left: 3px; }
   .voice-track[data-position="5"] { top: 77%; bottom: auto; left: 3px; }
-  .voice-track[data-position="6"] { top: 5%; right: 3px; }
-  .voice-track[data-position="7"] { top: 23%; right: 3px; }
-  .voice-track[data-position="8"] { top: 41%; right: 3px; }
-  .voice-track[data-position="9"] { top: 59%; right: 3px; }
-  .voice-track[data-position="10"] { top: 77%; right: 3px; bottom: auto; }
+  .voice-track[data-position="6"] { top: 9%; right: 3px; }
+  .voice-track[data-position="7"] { top: 27%; right: 3px; }
+  .voice-track[data-position="8"] { top: 45%; right: 3px; }
+  .voice-track[data-position="9"] { top: 65%; right: 3px; }
+  .voice-track[data-position="10"] { top: 84%; right: 3px; bottom: auto; }
 
   .voice-continue-button {
     right: 18px;
-    bottom: 48px;
+    top: 44px;
   }
 
   .rain-canvas--back {
@@ -1363,6 +1384,14 @@ a.media-strip:hover {
 
   .rain-canvas--front {
     opacity: .86;
+  }
+
+  .voice-smoke--back {
+    opacity: .62;
+  }
+
+  .voice-smoke--front {
+    opacity: .4;
   }
 
   .intro-back {
