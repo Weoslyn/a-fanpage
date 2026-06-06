@@ -638,12 +638,14 @@ h1 {
 
 .archive-drawer {
   position: absolute;
-  z-index: 8;
+  z-index: 10;
   top: clamp(70px, 10vh, 108px);
   right: clamp(22px, 5vw, 78px);
   width: min(380px, calc(100vw - 44px));
   max-height: calc(100vh - 140px);
   padding: 28px 25px 30px;
+  display: flex;
+  flex-direction: column;
   border-right: 1px solid rgb(23 25 24 / 34%);
   border-left: 1px solid rgb(23 25 24 / 34%);
   background: rgb(231 232 229 / 91%);
@@ -725,8 +727,27 @@ h1 {
 }
 
 .drawer-items {
+  min-height: 0;
   margin-top: 20px;
   border-top: 1px solid rgb(23 25 24 / 22%);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgb(23 25 24 / 42%) transparent;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.drawer-items::-webkit-scrollbar {
+  width: 5px;
+}
+
+.drawer-items::-webkit-scrollbar-thumb {
+  background: rgb(23 25 24 / 38%);
+}
+
+.drawer-items::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .media-strip {
@@ -783,6 +804,138 @@ a.media-strip:hover {
 
 #app.is-third-page .intro-stage {
   pointer-events: auto;
+}
+
+.continue-button {
+  position: absolute;
+  z-index: 9;
+  right: clamp(18px, 2.6vw, 38px);
+  bottom: clamp(48px, 6vw, 72px);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 0;
+  border: 0;
+  color: #171918;
+  background: transparent;
+  cursor: pointer;
+}
+
+.continue-button span {
+  font: 500 9px/1 "DM Mono", monospace;
+  letter-spacing: .16em;
+}
+
+.continue-button b {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid rgb(23 25 24 / 46%);
+  border-radius: 50%;
+  font: 400 17px/1 "DM Mono", monospace;
+  transition: color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.continue-button:hover b,
+.continue-button:focus-visible b {
+  color: #e7e8e5;
+  background: #171918;
+  transform: translateX(3px);
+}
+
+.continue-button:focus-visible,
+.continuation-back:focus-visible {
+  outline: 1px solid #171918;
+  outline-offset: 5px;
+}
+
+.continuation-stage {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  overflow: hidden;
+  color: #171918;
+  background: #c5c7c4;
+  pointer-events: none;
+  transform: translateX(100%);
+  transition: transform 850ms cubic-bezier(.76, 0, .24, 1);
+}
+
+.continuation-stage::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(rgb(22 24 23 / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(22 24 23 / 6%) 1px, transparent 1px);
+  background-size: 8vw 8vw;
+  mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent);
+}
+
+.continuation-back,
+.continuation-index,
+.continuation-footer {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  font: 500 9px/1.2 "DM Mono", monospace;
+  letter-spacing: .16em;
+}
+
+.continuation-back {
+  top: clamp(18px, 2.6vw, 38px);
+  left: clamp(18px, 2.6vw, 38px);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 7px 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.continuation-index {
+  top: clamp(22px, 2.8vw, 42px);
+  right: clamp(18px, 2.6vw, 38px);
+}
+
+.continuation-copy {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: min(88vw, 980px);
+  transform: translate(-50%, -50%);
+}
+
+.continuation-copy p,
+.continuation-copy span {
+  margin: 0;
+  font: 500 9px/1.5 "DM Mono", monospace;
+  letter-spacing: .16em;
+}
+
+.continuation-copy h2 {
+  margin: 22px 0 28px;
+  font: 800 clamp(62px, 12vw, 176px)/.78 "Syne", sans-serif;
+  letter-spacing: 0;
+}
+
+.continuation-footer {
+  right: clamp(18px, 2.6vw, 38px);
+  bottom: clamp(18px, 2.6vw, 38px);
+}
+
+#app.is-fourth-page .third-page {
+  transform: translateX(-100%);
+  transition: transform 850ms cubic-bezier(.76, 0, .24, 1);
+}
+
+#app.is-fourth-page .continuation-stage {
+  pointer-events: auto;
+  transform: translateX(0);
 }
 
 @media (pointer: coarse) {
@@ -878,7 +1031,19 @@ a.media-strip:hover {
     left: 16px;
     width: auto;
     max-height: min(56vh, 520px);
-    overflow-y: auto;
+  }
+
+  .drawer-items {
+    padding-right: 4px;
+  }
+
+  .continue-button {
+    right: 18px;
+    bottom: 48px;
+  }
+
+  .continuation-copy h2 {
+    font-size: clamp(54px, 18vw, 96px);
   }
 
   .id-stream span {

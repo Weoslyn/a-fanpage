@@ -285,6 +285,7 @@ const init = async () => {
       "are-lines-visible",
       "is-falling",
       "is-third-page",
+      "is-fourth-page",
     );
     hint.textContent = "按住并滑动一次，打开隐藏图层";
     setEdgePosition(edgeFromReveal(0));

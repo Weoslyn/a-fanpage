@@ -13,6 +13,8 @@ export const setupIntroExperience = () => {
   const drawerDescription = document.querySelector<HTMLElement>("#drawer-description");
   const drawerItems = document.querySelector<HTMLElement>("#drawer-items");
   const drawerClose = document.querySelector<HTMLButtonElement>("#drawer-close");
+  const continueButton = document.querySelector<HTMLButtonElement>("#continue-button");
+  const continuationBack = document.querySelector<HTMLButtonElement>("#continuation-back");
   const hotspots = Array.from(
     document.querySelectorAll<HTMLButtonElement>(".portrait-hotspot"),
   );
@@ -28,7 +30,9 @@ export const setupIntroExperience = () => {
     !drawerTitle ||
     !drawerDescription ||
     !drawerItems ||
-    !drawerClose
+    !drawerClose ||
+    !continueButton ||
+    !continuationBack
   ) {
     return;
   }
@@ -159,13 +163,21 @@ export const setupIntroExperience = () => {
     if (supportsHover.matches && !lockedCategory) closeDrawer();
   });
   drawerClose.addEventListener("click", () => closeDrawer(true));
+  continueButton.addEventListener("click", () => {
+    app.classList.add("is-fourth-page");
+  });
+  continuationBack.addEventListener("click", () => {
+    app.classList.remove("is-fourth-page");
+  });
   window.addEventListener("resize", resize);
 
   setupFluidCursor(
     stage,
     backCanvas,
     frontCanvas,
-    () => app.classList.contains("is-third-page"),
+    () =>
+      app.classList.contains("is-third-page") &&
+      !app.classList.contains("is-fourth-page"),
   );
 
   const render = () => {
