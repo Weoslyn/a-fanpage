@@ -65,6 +65,7 @@ const displayShader = `#version 300 es
 
   uniform sampler2D uFluid;
   uniform vec2 uTexel;
+  uniform float uWaterMode;
   in vec2 vUv;
   out vec4 outColor;
 
@@ -78,7 +79,21 @@ const displayShader = `#version 300 es
       texture(uFluid, vUv - vec2(0.0, uTexel.y * 3.0)).r * 0.13;
     float alpha = smoothstep(0.014, 0.44, softDensity) * 0.86;
     vec3 smoke = mix(vec3(0.48), vec3(0.82), smoothstep(0.08, 0.7, softDensity));
-    outColor = vec4(smoke, alpha);
+    float edge = smoothstep(0.015, 0.18, softDensity) -
+      smoothstep(0.22, 0.62, softDensity);
+    vec3 water = mix(
+      vec3(0.16, 0.25, 0.29),
+      vec3(0.88, 0.94, 0.95),
+      clamp(softDensity * 1.08 + edge * 0.92, 0.0, 1.0)
+    );
+    float waterAlpha =
+      smoothstep(0.01, 0.34, softDensity) * 0.72 +
+      max(edge, 0.0) * 0.58;
+    outColor = mix(
+      vec4(smoke, alpha),
+      vec4(water, clamp(waterAlpha, 0.0, 0.82)),
+      uWaterMode
+    );
   }
 `;
 
@@ -153,6 +168,7 @@ export const setupFluidCursor = (
   backCanvas: HTMLCanvasElement,
   frontCanvas: HTMLCanvasElement,
   isVisible: () => boolean,
+  mode: "smoke" | "water" = "smoke",
 ) => {
   const gl = backCanvas.getContext("webgl2", {
     alpha: true,
@@ -275,7 +291,11 @@ export const setupFluidCursor = (
     );
     gl.uniform1f(
       gl.getUniformLocation(simulationProgram, "uInject"),
-      pointerIsMoving ? (isMobile ? 0.62 : 0.82) : ambient ? (isMobile ? 0.42 : 0.58) : 0,
+      pointerIsMoving
+        ? (mode === "water" ? (isMobile ? 0.82 : 1.08) : (isMobile ? 0.62 : 0.82))
+        : ambient
+          ? (mode === "water" ? (isMobile ? 0.5 : 0.7) : (isMobile ? 0.42 : 0.58))
+          : 0,
     );
     gl.uniform1f(gl.getUniformLocation(simulationProgram, "uTime"), time * 0.001);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -295,6 +315,10 @@ export const setupFluidCursor = (
       gl.getUniformLocation(displayProgram, "uTexel"),
       1 / simulationWidth,
       1 / simulationHeight,
+    );
+    gl.uniform1f(
+      gl.getUniformLocation(displayProgram, "uWaterMode"),
+      mode === "water" ? 1 : 0,
     );
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);

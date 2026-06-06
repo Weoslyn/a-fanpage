@@ -150,6 +150,7 @@ export const setupVoiceExperience = () => {
     () =>
       app.classList.contains("is-voice-page") &&
       !app.classList.contains("is-third-page"),
+    "water",
   );
 
   continueButton.addEventListener("click", async () => {
