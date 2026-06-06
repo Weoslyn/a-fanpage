@@ -7,7 +7,6 @@ export const setupIntroExperience = () => {
   const stage = document.querySelector<HTMLElement>("#intro-stage");
   const figure = document.querySelector<HTMLElement>(".portrait-figure");
   const backCanvas = document.querySelector<HTMLCanvasElement>("#smoke-canvas-back");
-  const frontCanvas = document.querySelector<HTMLCanvasElement>("#smoke-canvas-front");
   const drawer = document.querySelector<HTMLElement>("#archive-drawer");
   const drawerEyebrow = document.querySelector<HTMLElement>("#drawer-eyebrow");
   const drawerTitle = document.querySelector<HTMLElement>("#drawer-title");
@@ -26,7 +25,6 @@ export const setupIntroExperience = () => {
     !stage ||
     !figure ||
     !backCanvas ||
-    !frontCanvas ||
     !drawer ||
     !drawerEyebrow ||
     !drawerTitle ||
@@ -191,7 +189,6 @@ export const setupIntroExperience = () => {
   setupFluidCursor(
     stage,
     backCanvas,
-    frontCanvas,
     () =>
       app.classList.contains("is-third-page") &&
       !app.classList.contains("is-fourth-page"),

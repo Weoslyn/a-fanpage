@@ -24,7 +24,6 @@ export const setupVoiceExperience = () => {
   const rainBack = document.querySelector<HTMLCanvasElement>("#rain-canvas-back");
   const rainFront = document.querySelector<HTMLCanvasElement>("#rain-canvas-front");
   const smokeBack = document.querySelector<HTMLCanvasElement>("#voice-smoke-back");
-  const smokeFront = document.querySelector<HTMLCanvasElement>("#voice-smoke-front");
 
   if (
     !app ||
@@ -35,8 +34,7 @@ export const setupVoiceExperience = () => {
     !status ||
     !rainBack ||
     !rainFront ||
-    !smokeBack ||
-    !smokeFront
+    !smokeBack
   ) return;
 
   figure.style.setProperty(
@@ -146,7 +144,6 @@ export const setupVoiceExperience = () => {
   setupFluidCursor(
     stage,
     smokeBack,
-    smokeFront,
     () =>
       app.classList.contains("is-voice-page") &&
       !app.classList.contains("is-third-page"),

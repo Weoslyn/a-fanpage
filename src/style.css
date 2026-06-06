@@ -466,16 +466,9 @@ h1 {
 }
 
 .voice-smoke--back {
-  z-index: 2;
-  opacity: .48;
-  filter: blur(2px) saturate(.42) contrast(1.16);
-  mix-blend-mode: normal;
-}
-
-.voice-smoke--front {
   z-index: 6;
-  opacity: .34;
-  filter: blur(.6px) saturate(.42) contrast(1.16);
+  opacity: .42;
+  filter: blur(.8px) saturate(.42) contrast(1.16);
   mix-blend-mode: screen;
 }
 
@@ -566,10 +559,13 @@ h1 {
   z-index: 4;
   top: 50%;
   left: 50%;
-  width: min(96vw, 1380px);
-  height: 2px;
-  background: rgb(218 221 218 / 46%);
-  box-shadow: 0 0 8px rgb(218 221 218 / 14%);
+  width: 125vw;
+  height: clamp(82px, 11vw, 148px);
+  background: rgb(210 214 211 / 24%);
+  box-shadow:
+    0 -22px 34px rgb(210 214 211 / 9%),
+    0 22px 34px rgb(210 214 211 / 9%);
+  filter: blur(1px);
   pointer-events: none;
   transform: translate(-50%, -50%) rotate(-31deg);
   transform-origin: center;
@@ -761,15 +757,9 @@ h1 {
 }
 
 .smoke-canvas--back {
-  z-index: 2;
-  opacity: .9;
-  filter: blur(4px) grayscale(.25) contrast(1.08);
-}
-
-.smoke-canvas--front {
   z-index: 5;
-  opacity: .74;
-  filter: blur(1px) grayscale(.18) contrast(1.12);
+  opacity: .76;
+  filter: blur(1.4px) grayscale(.2) contrast(1.1);
 }
 
 .id-stream {
@@ -1410,11 +1400,7 @@ a.media-strip:hover {
   }
 
   .voice-smoke--back {
-    opacity: .38;
-  }
-
-  .voice-smoke--front {
-    opacity: .28;
+    opacity: .34;
   }
 
   .intro-back {
@@ -1446,11 +1432,7 @@ a.media-strip:hover {
   }
 
   .smoke-canvas--back {
-    opacity: .72;
-  }
-
-  .smoke-canvas--front {
-    opacity: .48;
+    opacity: .58;
   }
 
   .archive-drawer {

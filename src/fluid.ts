@@ -179,18 +179,16 @@ const createTarget = (
 
 export const setupFluidCursor = (
   stage: HTMLElement,
-  backCanvas: HTMLCanvasElement,
-  frontCanvas: HTMLCanvasElement,
+  canvas: HTMLCanvasElement,
   isVisible: () => boolean,
   mode: "smoke" | "water" = "smoke",
 ) => {
-  const gl = backCanvas.getContext("webgl2", {
+  const gl = canvas.getContext("webgl2", {
     alpha: true,
     antialias: false,
     premultipliedAlpha: false,
   });
-  const frontContext = frontCanvas.getContext("2d");
-  if (!gl || !frontContext) return () => undefined;
+  if (!gl) return () => undefined;
 
   const simulationProgram = createProgram(gl, simulationShader);
   const displayProgram = createProgram(gl, displayShader);
@@ -229,12 +227,10 @@ export const setupFluidCursor = (
     const width = Math.max(stage.clientWidth, 1);
     const height = Math.max(stage.clientHeight, 1);
     const dpr = Math.min(window.devicePixelRatio, isMobile ? 1 : 1.35);
-    backCanvas.width = Math.round(width * dpr);
-    backCanvas.height = Math.round(height * dpr);
-    frontCanvas.width = Math.round(width * dpr);
-    frontCanvas.height = Math.round(height * dpr);
-    frontCanvas.style.width = `${width}px`;
-    frontCanvas.style.height = `${height}px`;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
 
     const simulationScale = isMobile ? 0.3 : 0.46;
     simulationWidth = Math.max(isMobile ? 128 : 180, Math.round(width * simulationScale));
@@ -324,7 +320,7 @@ export const setupFluidCursor = (
     pointer.previousY += (pointer.y - pointer.previousY) * 0.42;
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    gl.viewport(0, 0, backCanvas.width, backCanvas.height);
+    gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(displayProgram);
@@ -346,13 +342,6 @@ export const setupFluidCursor = (
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     gl.disable(gl.BLEND);
 
-    frontContext.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
-    frontContext.save();
-    frontContext.globalAlpha = isMobile ? 0.26 : 0.38;
-    frontContext.globalCompositeOperation = "source-over";
-    frontContext.filter = "blur(2px) contrast(1.08)";
-    frontContext.drawImage(backCanvas, 0, 0, frontCanvas.width, frontCanvas.height);
-    frontContext.restore();
     frame += 1;
   };
 
