@@ -467,15 +467,15 @@ h1 {
 
 .voice-smoke--back {
   z-index: 2;
-  opacity: .94;
-  filter: blur(2px) saturate(.5) contrast(1.28);
+  opacity: .48;
+  filter: blur(2px) saturate(.42) contrast(1.16);
   mix-blend-mode: normal;
 }
 
 .voice-smoke--front {
   z-index: 6;
-  opacity: .82;
-  filter: blur(.3px) saturate(.55) contrast(1.3);
+  opacity: .34;
+  filter: blur(.6px) saturate(.42) contrast(1.16);
   mix-blend-mode: screen;
 }
 
@@ -561,6 +561,20 @@ h1 {
   display: none;
 }
 
+.voice-diagonal {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  width: min(96vw, 1380px);
+  height: 2px;
+  background: rgb(218 221 218 / 46%);
+  box-shadow: 0 0 8px rgb(218 221 218 / 14%);
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-31deg);
+  transform-origin: center;
+}
+
 .voice-track-list {
   --orbit-x: 0px;
   --orbit-y: 0px;
@@ -576,8 +590,12 @@ h1 {
   position: absolute;
   display: block;
   width: clamp(170px, 18vw, 260px);
-  padding-bottom: 9px;
-  border-bottom: 1px solid rgb(225 228 224 / 28%);
+  padding: 9px;
+  border: 1px solid rgb(225 228 224 / 34%);
+  box-shadow:
+    inset 0 0 0 1px rgb(12 14 13 / 22%),
+    0 0 0 1px rgb(225 228 224 / 5%);
+  background: rgb(24 27 25 / 16%);
   pointer-events: auto;
 }
 
@@ -610,9 +628,10 @@ h1 {
   height: 30px;
   margin-top: 8px;
   padding: 0 9px;
-  border: 1px solid rgb(225 228 224 / 42%);
+  border: 1px solid rgb(225 228 224 / 66%);
   color: #171918;
   background: rgb(213 217 214 / 84%);
+  box-shadow: inset 0 0 0 1px rgb(23 25 24 / 18%);
   cursor: pointer;
 }
 
@@ -1391,11 +1410,11 @@ a.media-strip:hover {
   }
 
   .voice-smoke--back {
-    opacity: .76;
+    opacity: .38;
   }
 
   .voice-smoke--front {
-    opacity: .56;
+    opacity: .28;
   }
 
   .intro-back {

@@ -54,7 +54,7 @@ const simulationShader = `#version 300 es
       center.r,
       blurred * 0.25,
       mix(0.085, 0.18, uWaterMode)
-    ) * mix(0.992, 0.987, uWaterMode);
+    ) * mix(0.992, 0.958, uWaterMode);
     velocity *= mix(0.984, 0.955, uWaterMode);
     velocity += curl * mix(28.0, 5.0, uWaterMode);
 
@@ -101,8 +101,8 @@ const displayShader = `#version 300 es
       clamp(waterBody * 0.7 + edge * 0.72, 0.0, 1.0)
     );
     float waterAlpha =
-      waterBody * 0.76 +
-      max(edge, 0.0) * 0.42;
+      waterBody * 0.43 +
+      max(edge, 0.0) * 0.25;
     outColor = mix(
       vec4(smoke, alpha),
       vec4(water, clamp(waterAlpha, 0.0, 0.82)),
@@ -272,7 +272,10 @@ export const setupFluidCursor = (
     const velocityY = Math.max(-0.08, Math.min(0.08, pointer.y - pointer.previousY));
     const pointerIsMoving = pointer.active && performance.now() - lastPointerMove < 90;
     const ambientInterval = isMobile ? 72 : 48;
-    const ambient = !pointerIsMoving && frame % ambientInterval === 0;
+    const ambient =
+      mode !== "water" &&
+      !pointerIsMoving &&
+      frame % ambientInterval === 0;
     if (ambient) {
       ambientPhase += 0.013;
       pointer.previousX = pointer.x;
@@ -308,7 +311,7 @@ export const setupFluidCursor = (
       pointerIsMoving
         ? (mode === "water" ? (isMobile ? 0.82 : 1.08) : (isMobile ? 0.62 : 0.82))
         : ambient
-          ? (mode === "water" ? (isMobile ? 0.5 : 0.7) : (isMobile ? 0.42 : 0.58))
+          ? (isMobile ? 0.42 : 0.58)
           : 0,
     );
     gl.uniform1f(gl.getUniformLocation(simulationProgram, "uTime"), time * 0.001);
