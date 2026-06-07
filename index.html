@@ -50,11 +50,10 @@
         <div class="voice-scene">
           <div class="voice-figure">
             <div class="voice-figure-shadow" aria-hidden="true"></div>
-            <img src="%BASE_URL%images/a-full.png" alt="Albert 黑色西装全身动漫形象" />
+            <img src="%BASE_URL%images/a-voice-original.jpg" alt="Albert 黑色西装全身动漫形象" />
           </div>
           <div id="voice-track-list" class="voice-track-list"></div>
         </div>
-        <div class="voice-diagonal" aria-hidden="true"></div>
         <canvas id="rain-canvas-front" class="rain-canvas rain-canvas--front" aria-hidden="true"></canvas>
         <footer class="voice-footer">
           <p>10 VOICE NOTES / PENDING AUDIO</p>
@@ -148,18 +147,55 @@
           <b aria-hidden="true">→</b>
         </button>
       </section>
-      <section id="continuation-stage" class="continuation-stage" aria-label="未完待续">
+      <section id="continuation-stage" class="continuation-stage" aria-label="粉丝二创档案">
         <button id="continuation-back" class="continuation-back" type="button" aria-label="返回人物介绍">
           <span aria-hidden="true">←</span>
           <span>BACK</span>
         </button>
-        <p class="continuation-index">ARCHIVE / 002</p>
-        <div class="continuation-copy">
-          <p>THE STORY REMAINS OPEN</p>
-          <h2>TO BE<br />CONTINUED</h2>
-          <span>下一段档案，正在发生。</span>
+        <p class="continuation-index">FAN WORKS / 002</p>
+        <div class="fan-archive">
+          <header class="fan-archive-heading">
+            <p>ALBERT FAN ARCHIVE</p>
+            <h2>CREATED<br />BY YOU</h2>
+            <span>SCROLL TO EXPLORE</span>
+          </header>
+          <div class="fan-v-panel" aria-hidden="true">
+            <img src="%BASE_URL%images/a-fan-center.png" alt="" />
+          </div>
+          <div class="fan-v-outline" aria-hidden="true"></div>
+          <div class="fan-gallery fan-gallery--left">
+            <a class="fan-work" href="#" style="--preview: url('%BASE_URL%images/a-portrait.jpg')">
+              <span>夜色肖像</span><small>FAN ART / 001</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('%BASE_URL%images/a-cutout.png')">
+              <span>无休止符</span><small>FAN ART / 002</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('%BASE_URL%images/a-voice-original.jpg')">
+              <span>雨中的来信</span><small>FAN ART / 003</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('%BASE_URL%images/a-fan-center.png')">
+              <span>黑白习作</span><small>FAN ART / 004</small>
+            </a>
+          </div>
+          <div class="fan-gallery fan-gallery--right">
+            <a class="fan-work" href="#" style="--preview: url('%BASE_URL%images/a-fan-center.png')">
+              <span>灰阶回响</span><small>FAN ART / 005</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('%BASE_URL%images/a-portrait.jpg')">
+              <span>风暴眼</span><small>FAN ART / 006</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('%BASE_URL%images/a-cutout.png')">
+              <span>未寄出的台本</span><small>FAN ART / 007</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('%BASE_URL%images/a-voice-original.jpg')">
+              <span>真实一刻</span><small>FAN ART / 008</small>
+            </a>
+          </div>
+          <footer class="fan-archive-end">
+            <p>MORE WORKS TO BE ARCHIVED</p>
+            <span>@Albertkwongonly · FAN ARCHIVE / 2026</span>
+          </footer>
         </div>
-        <p class="continuation-footer">@Albertkwongonly · FAN ARCHIVE / 2026</p>
       </section>
     </main>
     <script type="module" src="/src/main.ts"></script>

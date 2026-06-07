@@ -184,6 +184,9 @@ export const setupIntroExperience = () => {
   continuationBack.addEventListener("click", () => {
     app.classList.remove("is-fourth-page");
   });
+  document.querySelectorAll<HTMLAnchorElement>(".fan-work[href='#']").forEach((item) => {
+    item.addEventListener("click", (event) => event.preventDefault());
+  });
   window.addEventListener("resize", resize);
 
   setupFluidCursor(

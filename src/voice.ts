@@ -39,7 +39,7 @@ export const setupVoiceExperience = () => {
 
   figure.style.setProperty(
     "--voice-image",
-    `url("${import.meta.env.BASE_URL}images/a-full.png")`,
+    `url("${import.meta.env.BASE_URL}images/a-voice-original.jpg")`,
   );
   const audio = new Audio();
   let activeButton: HTMLButtonElement | null = null;
