@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#10100f" />
+    <title>A / Phase One</title>
+    <script type="module" crossorigin src="./assets/index-dv6T_KFM.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BLFcTrR_.css">
+  </head>
+  <body>
+    <main id="app">
+      <canvas id="reveal-canvas" aria-label="划开前景，探索隐藏画面"></canvas>
+      <section class="archive-view" aria-label="A 人物档案">
+        <div class="archive-frame" aria-hidden="true"></div>
+        <p class="archive-index">PORTRAIT STUDY / 001</p>
+        <div class="name-focus">
+          <i class="name-line name-line--top"></i>
+          <p class="archive-name">AlbertKwongonly</p>
+          <i class="name-line name-line--bottom"></i>
+        </div>
+        <p class="archive-meta">MONOCHROME<br />PRIVATE ARCHIVE</p>
+        <span class="archive-coordinate archive-coordinate--left">X 00.01</span>
+        <span class="archive-coordinate archive-coordinate--right">Y 06.06</span>
+      </section>
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="A 首页">
+          <span class="brand-mark">A</span>
+          <span>ARCHIVE / 001</span>
+        </a>
+        <span class="status"><i></i> INTERACTIVE STUDY</span>
+      </header>
+      <section class="hero-copy">
+        <p class="eyebrow">A FAN PAGE · PHASE ONE</p>
+        <h1>SLIDE TO<br />OPEN</h1>
+        <p class="hint">按住并滑动一次，打开隐藏图层</p>
+      </section>
+      <div class="progress" aria-hidden="true">
+        <span>OPEN</span>
+        <div class="progress-track"><i id="progress-fill"></i></div>
+        <b id="progress-label">00%</b>
+      </div>
+      <button id="reset-button" class="reset" type="button">RESET</button>
+      <div id="brush-cursor" class="brush-cursor" aria-hidden="true"></div>
+      <section id="voice-stage" class="voice-stage" aria-label="Albert 语音档案">
+        <canvas id="rain-canvas-back" class="rain-canvas rain-canvas--back" aria-hidden="true"></canvas>
+        <canvas id="voice-smoke-back" class="voice-smoke voice-smoke--back" aria-hidden="true"></canvas>
+        <header class="voice-header">
+          <p>VOICE ARCHIVE / ALBERT</p>
+          <p id="voice-status">SELECT A VOICE NOTE</p>
+        </header>
+        <div class="voice-scene">
+          <div class="voice-figure">
+            <div class="voice-figure-shadow" aria-hidden="true"></div>
+            <img src="./images/a-voice-original.jpg" alt="Albert 黑色西装全身动漫形象" />
+          </div>
+          <div id="voice-track-list" class="voice-track-list"></div>
+        </div>
+        <div class="voice-reveal-panels" aria-hidden="true">
+          <i></i>
+          <i></i>
+        </div>
+        <canvas id="rain-canvas-front" class="rain-canvas rain-canvas--front" aria-hidden="true"></canvas>
+        <footer class="voice-footer">
+          <p>10 VOICE NOTES / PENDING AUDIO</p>
+          <p>FAN ARCHIVE / 2026</p>
+        </footer>
+        <button
+          id="voice-continue-button"
+          class="voice-continue-button"
+          type="button"
+          aria-label="进入人物互动页"
+        >
+          <span>PORTRAIT ARCHIVE</span>
+          <b aria-hidden="true">→</b>
+        </button>
+      </section>
+      <section id="intro-stage" class="intro-stage" aria-label="Albert 人物介绍">
+        <button id="intro-back" class="intro-back" type="button" aria-label="返回语音档案">
+          <span aria-hidden="true">←</span>
+          <span>BACK</span>
+        </button>
+        <canvas id="smoke-canvas-back" class="smoke-canvas smoke-canvas--back" aria-hidden="true"></canvas>
+        <div class="id-stream" aria-hidden="true">
+          <div>
+            <span>@Albertkwongonly</span>
+            <span>@Albertkwongonly</span>
+            <span>@Albertkwongonly</span>
+            <span>@Albertkwongonly</span>
+          </div>
+        </div>
+        <header class="intro-header">
+          <p>PORTRAIT / ALBERT</p>
+          <p>MOVE TO EXPLORE</p>
+        </header>
+        <div class="portrait-zone">
+          <div class="portrait-figure">
+            <div class="portrait-shadow" aria-hidden="true"></div>
+            <img src="./images/a-cutout.png" alt="Albert 黑白动漫人物肖像" />
+            <button
+              class="portrait-hotspot hotspot-head"
+              type="button"
+              data-category="x-video"
+              aria-label="展开 A的奇思妙想"
+              aria-controls="archive-drawer"
+              aria-expanded="false"
+            ></button>
+            <button
+              class="portrait-hotspot hotspot-lips"
+              type="button"
+              data-category="voice"
+              aria-label="展开 A的台本作品"
+              aria-controls="archive-drawer"
+              aria-expanded="false"
+            ></button>
+            <button
+              class="portrait-hotspot hotspot-hand"
+              type="button"
+              data-category="recording"
+              aria-label="展开实录"
+              aria-controls="archive-drawer"
+              aria-expanded="false"
+            ></button>
+            <button
+              class="portrait-hotspot hotspot-smoke"
+              type="button"
+              data-category="qa"
+              aria-label="展开 A的Q&A"
+              aria-controls="archive-drawer"
+              aria-expanded="false"
+            ></button>
+          </div>
+        </div>
+        <aside id="archive-drawer" class="archive-drawer" hidden aria-live="polite">
+          <div class="scroll-rail scroll-rail--top" aria-hidden="true"></div>
+          <div class="drawer-heading">
+            <div>
+              <p id="drawer-eyebrow"></p>
+              <h2 id="drawer-title"></h2>
+            </div>
+            <button id="drawer-close" type="button" aria-label="关闭内容卷轴">×</button>
+          </div>
+          <p id="drawer-description" class="drawer-description"></p>
+          <div id="drawer-items" class="drawer-items"></div>
+          <div class="scroll-rail scroll-rail--bottom" aria-hidden="true"></div>
+        </aside>
+        <footer class="intro-footer">
+          <p>VOICE · RECORD · Q&A · X</p>
+          <p>FAN ARCHIVE / 2026</p>
+        </footer>
+        <button id="continue-button" class="continue-button" type="button" aria-label="进入下一页">
+          <span>TO BE CONTINUED</span>
+          <b aria-hidden="true">→</b>
+        </button>
+      </section>
+      <section id="continuation-stage" class="continuation-stage" aria-label="粉丝二创档案">
+        <button id="continuation-back" class="continuation-back" type="button" aria-label="返回人物介绍">
+          <span aria-hidden="true">←</span>
+          <span>BACK</span>
+        </button>
+        <p class="continuation-index">FAN WORKS / 002</p>
+        <div class="fan-archive">
+          <header class="fan-archive-heading">
+            <p>ALBERT FAN ARCHIVE</p>
+            <h2>CREATED<br />BY YOU</h2>
+            <span>SCROLL TO EXPLORE</span>
+          </header>
+          <div class="fan-v-panel" aria-hidden="true">
+            <div class="fan-portrait-motion">
+              <img src="./images/a-fan-center.png" alt="" />
+            </div>
+          </div>
+          <svg class="fan-v-outline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path pathLength="1" d="M 50 100 L 0 0" />
+            <path pathLength="1" d="M 50 100 L 100 0" />
+          </svg>
+          <svg class="fan-v-outer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path pathLength="1" d="M 50 100 L 0 0" />
+            <path pathLength="1" d="M 50 100 L 100 0" />
+          </svg>
+          <p class="fan-scroll-hint">下滑查看二创作品</p>
+          <div class="fan-works-grid">
+          <div class="fan-gallery fan-gallery--left">
+            <a class="fan-work" href="#" style="--preview: url('./images/a-portrait.jpg')">
+              <span>夜色肖像</span><small>FAN ART / 001</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-cutout.png')">
+              <span>无休止符</span><small>FAN ART / 002</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-voice-original.jpg')">
+              <span>雨中的来信</span><small>FAN ART / 003</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-fan-center.png')">
+              <span>黑白习作</span><small>FAN ART / 004</small>
+            </a>
+          </div>
+          <div class="fan-gallery fan-gallery--right">
+            <a class="fan-work" href="#" style="--preview: url('./images/a-fan-center.png')">
+              <span>灰阶回响</span><small>FAN ART / 005</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-portrait.jpg')">
+              <span>风暴眼</span><small>FAN ART / 006</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-cutout.png')">
+              <span>未寄出的台本</span><small>FAN ART / 007</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-voice-original.jpg')">
+              <span>真实一刻</span><small>FAN ART / 008</small>
+            </a>
+          </div>
+          <div class="fan-gallery-lower">
+            <a class="fan-work" href="#" style="--preview: url('./images/a-portrait.jpg')">
+              <span>流动的季节</span><small>FAN ART / 009</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-fan-center.png')">
+              <span>目光之外</span><small>FAN ART / 010</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-cutout.png')">
+              <span>无声片段</span><small>FAN ART / 011</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-voice-original.jpg')">
+              <span>雨幕之后</span><small>FAN ART / 012</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-fan-center.png')">
+              <span>侧写练习</span><small>FAN ART / 013</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-portrait.jpg')">
+              <span>风的停顿</span><small>FAN ART / 014</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-voice-original.jpg')">
+              <span>深夜回声</span><small>FAN ART / 015</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-cutout.png')">
+              <span>未完对白</span><small>FAN ART / 016</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-portrait.jpg')">
+              <span>灰色温度</span><small>FAN ART / 017</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-cutout.png')">
+              <span>一页独白</span><small>FAN ART / 018</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-fan-center.png')">
+              <span>镜面时刻</span><small>FAN ART / 019</small>
+            </a>
+            <a class="fan-work" href="#" style="--preview: url('./images/a-voice-original.jpg')">
+              <span>留白档案</span><small>FAN ART / 020</small>
+            </a>
+          </div>
+          </div>
+          <footer class="fan-archive-end">
+            <p>MORE WORKS TO BE ARCHIVED</p>
+            <span>@Albertkwongonly · FAN ARCHIVE / 2026</span>
+          </footer>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
