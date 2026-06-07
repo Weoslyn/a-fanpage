@@ -1387,27 +1387,28 @@ a.media-strip:hover {
 }
 
 .fan-gallery {
-  position: relative;
+  position: absolute;
   z-index: 5;
+  top: 0;
   display: grid;
-  width: calc(30vw - 18px);
-  gap: clamp(16px, 2.8vh, 34px);
+  width: calc(29vw - 12px);
+  gap: clamp(10px, 1.5vh, 18px);
 }
 
 .fan-gallery--left {
-  float: left;
-  padding-top: 8vh;
+  left: clamp(18px, 3.2vw, 52px);
+  padding-top: clamp(86px, 8vh, 116px);
 }
 
 .fan-gallery--right {
-  float: right;
-  padding-top: 14vh;
+  right: clamp(18px, 3.2vw, 52px);
+  padding-top: clamp(86px, 8vh, 116px);
 }
 
 .fan-work {
   position: relative;
   display: grid;
-  min-height: clamp(118px, 18vh, 190px);
+  min-height: clamp(118px, 20vh, 210px);
   padding: 24px clamp(28px, 4vw, 62px);
   overflow: hidden;
   place-content: center;
@@ -1416,11 +1417,22 @@ a.media-strip:hover {
   background: rgb(47 50 48 / 16%);
   text-align: center;
   text-decoration: none;
-  clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%);
   isolation: isolate;
 }
 
-.fan-work:nth-child(even) {
+.fan-gallery--left .fan-work {
+  clip-path: polygon(0 0, 78% 0, 100% 100%, 0 100%);
+}
+
+.fan-gallery--right .fan-work {
+  clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.fan-gallery-lower .fan-work {
+  clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%);
+}
+
+.fan-gallery-lower .fan-work:nth-child(even) {
   clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
 }
 
@@ -1746,19 +1758,24 @@ a.media-strip:hover {
 
   .fan-gallery {
     width: 31vw;
-    gap: 18px;
+    gap: 8px;
+  }
+
+  .fan-gallery--left,
+  .fan-gallery--right {
+    padding-top: 76px;
   }
 
   .fan-gallery--left {
-    padding-top: 23vh;
+    left: 10px;
   }
 
   .fan-gallery--right {
-    padding-top: 29vh;
+    right: 10px;
   }
 
   .fan-work {
-    min-height: 112px;
+    min-height: clamp(98px, 18vh, 132px);
     padding: 14px 20px;
   }
 
