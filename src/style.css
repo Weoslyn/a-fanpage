@@ -1539,7 +1539,7 @@ a.media-strip:hover {
   inset: 0;
   background: var(--preview) center / cover no-repeat;
   content: "";
-  opacity: 0;
+  opacity: 1;
   filter: grayscale(1) blur(22px) contrast(.82);
   transform: scale(1.18);
   transition: opacity 180ms ease;
@@ -2013,15 +2013,15 @@ a.media-strip:hover {
   top: 0;
   left: 50%;
   width: min(52vw, 700px);
-  height: 100vh;
+  height: 88vh;
   transform: translateX(-50%);
   transform-origin: 50% 100%;
 }
 
 .fan-v-outline,
 .fan-v-outer {
-  opacity: 0;
-  transform: translateX(-50%) scaleX(0);
+  opacity: 1;
+  transform: translateX(-50%);
 }
 
 .fan-v-outer {
@@ -2058,36 +2058,10 @@ a.media-strip:hover {
   stroke-dashoffset: 0;
 }
 
-.fan-reveal-mask {
-  position: absolute;
-  z-index: 5;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 100vh;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.fan-reveal-mask i {
-  position: absolute;
-  inset: 0;
-  display: block;
-  background: #696c69;
-}
-
-.fan-reveal-mask-left {
-  clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-}
-
-.fan-reveal-mask-right {
-  clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
-}
-
 .fan-scroll-hint {
   position: absolute;
   z-index: 8;
-  top: calc(100vh + 18px);
+  top: calc(88vh + 20px);
   left: 50%;
   margin: 0;
   color: rgb(240 242 239 / 78%);
@@ -2096,14 +2070,10 @@ a.media-strip:hover {
   transform: translateX(-50%);
 }
 
-#app.is-fourth-page .fan-archive-heading {
-  animation: fan-copy-enter 520ms ease 1550ms both;
-}
-
 .fan-works-grid {
   position: absolute;
   z-index: 6;
-  top: calc(100vh + 70px);
+  top: calc(88vh + 72px);
   right: clamp(16px, 3vw, 48px);
   left: clamp(16px, 3vw, 48px);
   display: grid;
@@ -2435,59 +2405,6 @@ a.media-strip:hover {
   100% { opacity: 0; transform: translate(-50%, -8px); }
 }
 
-#app.is-fourth-page .fan-v-outline,
-#app.is-fourth-page .fan-v-outer {
-  animation: fan-lines-spread 1050ms cubic-bezier(.22, 1, .36, 1) 700ms both;
-}
-
-#app.is-fourth-page .fan-reveal-mask-left {
-  animation: fan-mask-open-left 1050ms cubic-bezier(.22, 1, .36, 1) 700ms both;
-}
-
-#app.is-fourth-page .fan-reveal-mask-right {
-  animation: fan-mask-open-right 1050ms cubic-bezier(.22, 1, .36, 1) 700ms both;
-}
-
-@keyframes fan-lines-spread {
-  from {
-    transform: translateX(-50%) scaleX(0);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(-50%) scaleX(1);
-    opacity: 1;
-  }
-}
-
-@keyframes fan-mask-open-left {
-  from {
-    clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-  }
-  to {
-    clip-path: polygon(0 0, var(--fan-edge-left) 0, 50% 100%, 0 100%);
-  }
-}
-
-@keyframes fan-mask-open-right {
-  from {
-    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
-  }
-  to {
-    clip-path: polygon(var(--fan-edge-right) 0, 100% 0, 100% 100%, 50% 100%);
-  }
-}
-
-@keyframes fan-copy-enter {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 8px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
 @media (min-width: 900px) {
   .ending-stage {
     display: grid;
@@ -2510,21 +2427,29 @@ a.media-strip:hover {
 
   .ending-author {
     display: grid;
-    gap: 20px;
+    gap: 12px;
     align-self: start;
     margin-top: clamp(12px, 4vh, 54px);
   }
 
   .ending-avatar {
-    width: clamp(76px, 6.5vw, 104px);
+    width: clamp(58px, 4.8vw, 76px);
   }
 
   .ending-author-copy {
-    max-width: 320px;
+    max-width: 280px;
     padding-top: 0;
   }
 
-  .ending-author-copy span,
+  .ending-author-copy p {
+    font-size: 8px;
+  }
+
+  .ending-author-copy span {
+    font-size: clamp(8px, .62vw, 9px);
+    line-height: 1.7;
+  }
+
   .ending-thanks span {
     font-size: clamp(9px, .72vw, 11px);
     line-height: 1.8;
@@ -2558,12 +2483,12 @@ a.media-strip:hover {
   .fan-v-panel,
   .fan-v-outline {
     width: min(94vw, 560px);
-    height: 92vh;
+    height: 84vh;
   }
 
   .fan-v-outer {
     width: min(98vw, 590px);
-    height: 92vh;
+    height: 84vh;
   }
 
   .fan-v-panel img {
@@ -2576,13 +2501,13 @@ a.media-strip:hover {
   }
 
   .fan-scroll-hint {
-    top: calc(92vh + 14px);
+    top: calc(84vh + 16px);
     width: 100%;
     text-align: center;
   }
 
   .fan-works-grid {
-    top: calc(92vh + 58px);
+    top: calc(84vh + 58px);
     right: 10px;
     left: 10px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2678,22 +2603,6 @@ a.media-strip:hover {
 
   .portrait-figure {
     transform: none;
-  }
-
-  #app.is-fourth-page .fan-v-outline,
-  #app.is-fourth-page .fan-v-outer,
-  #app.is-fourth-page .fan-reveal-mask-left,
-  #app.is-fourth-page .fan-reveal-mask-right,
-  #app.is-fourth-page .fan-archive-heading {
-    animation: none;
-  }
-
-  .fan-reveal-mask-left {
-    clip-path: polygon(0 0, var(--fan-edge-left) 0, 50% 100%, 0 100%);
-  }
-
-  .fan-reveal-mask-right {
-    clip-path: polygon(var(--fan-edge-right) 0, 100% 0, 100% 100%, 50% 100%);
   }
 
   .fan-archive-heading {
