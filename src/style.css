@@ -1277,7 +1277,7 @@ a.media-strip:hover {
 .fan-archive {
   position: relative;
   z-index: 1;
-  min-height: 190vh;
+  min-height: 250vh;
   padding: clamp(84px, 9vw, 130px) clamp(18px, 3.2vw, 52px) 90px;
 }
 
@@ -1374,15 +1374,15 @@ a.media-strip:hover {
 
 .fan-v-outer::before {
   left: 0;
-  width: 3px;
-  background: rgb(235 238 234 / 48%);
+  width: 6px;
+  background: rgb(235 238 234 / 54%);
   transform: rotate(-11.4deg);
 }
 
 .fan-v-outer::after {
   right: 0;
-  width: 3px;
-  background: rgb(235 238 234 / 48%);
+  width: 6px;
+  background: rgb(235 238 234 / 54%);
   transform: rotate(11.4deg);
 }
 
@@ -1390,18 +1390,18 @@ a.media-strip:hover {
   position: relative;
   z-index: 5;
   display: grid;
-  width: calc(29vw - 30px);
-  gap: clamp(28px, 5vh, 70px);
+  width: calc(30vw - 18px);
+  gap: clamp(16px, 2.8vh, 34px);
 }
 
 .fan-gallery--left {
   float: left;
-  padding-top: 10vh;
+  padding-top: 8vh;
 }
 
 .fan-gallery--right {
   float: right;
-  padding-top: 22vh;
+  padding-top: 14vh;
 }
 
 .fan-work {
@@ -1416,12 +1416,27 @@ a.media-strip:hover {
   background: rgb(47 50 48 / 16%);
   text-align: center;
   text-decoration: none;
-  clip-path: polygon(0 0, 88% 0, 100% 100%, 12% 100%);
+  clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%);
   isolation: isolate;
 }
 
-.fan-gallery--right .fan-work {
-  clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%);
+.fan-work:nth-child(even) {
+  clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
+}
+
+.fan-gallery-lower {
+  position: absolute;
+  z-index: 5;
+  top: 122vh;
+  right: clamp(18px, 3.2vw, 52px);
+  left: clamp(18px, 3.2vw, 52px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 30px);
+}
+
+.fan-gallery-lower .fan-work {
+  min-height: clamp(130px, 19vh, 210px);
 }
 
 .fan-work::before {
@@ -1690,7 +1705,7 @@ a.media-strip:hover {
   }
 
   .fan-archive {
-    min-height: 175vh;
+    min-height: 240vh;
     padding: 84px 10px 80px;
   }
 
@@ -1731,15 +1746,15 @@ a.media-strip:hover {
 
   .fan-gallery {
     width: 31vw;
-    gap: clamp(70px, 12vh, 110px);
+    gap: 18px;
   }
 
   .fan-gallery--left {
-    padding-top: 26vh;
+    padding-top: 23vh;
   }
 
   .fan-gallery--right {
-    padding-top: 34vh;
+    padding-top: 29vh;
   }
 
   .fan-work {
@@ -1753,6 +1768,28 @@ a.media-strip:hover {
 
   .fan-work small {
     font-size: 7px;
+  }
+
+  .fan-gallery-lower {
+    top: 130vh;
+    right: 10px;
+    left: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .fan-gallery-lower .fan-work {
+    min-height: 104px;
+    padding: 8px 6px;
+  }
+
+  .fan-gallery-lower .fan-work span {
+    font-size: 10px;
+  }
+
+  .fan-gallery-lower .fan-work small {
+    font-size: 6px;
+    letter-spacing: .08em;
   }
 
   .fan-archive-end {
