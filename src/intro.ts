@@ -3,6 +3,32 @@ import { setupFluidCursor } from "./fluid";
 import { subscribeToDeviceTilt } from "./motion";
 
 export const setupIntroExperience = () => {
+  const fanWorks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".fan-work"));
+  let previewedWork: HTMLAnchorElement | null = null;
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (!(event.target instanceof Element)) return;
+      const item = event.target.closest<HTMLAnchorElement>(".fan-work");
+      if (!item) {
+        previewedWork?.classList.remove("is-previewing");
+        previewedWork = null;
+        return;
+      }
+
+      if (previewedWork !== item) {
+        event.preventDefault();
+        previewedWork?.classList.remove("is-previewing");
+        previewedWork = item;
+        item.classList.add("is-previewing");
+        return;
+      }
+
+      if (item.getAttribute("href") === "#") event.preventDefault();
+    },
+    true,
+  );
+
   const app = document.querySelector<HTMLElement>("#app");
   const stage = document.querySelector<HTMLElement>("#intro-stage");
   const figure = document.querySelector<HTMLElement>(".portrait-figure");
@@ -226,27 +252,6 @@ export const setupIntroExperience = () => {
       fanTilt.targetY = y * 6;
     },
   );
-  const fanWorks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".fan-work"));
-  let previewedWork: HTMLAnchorElement | null = null;
-  fanWorks.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      event.stopPropagation();
-      if (previewedWork !== item) {
-        event.preventDefault();
-        previewedWork?.classList.remove("is-previewing");
-        previewedWork = item;
-        item.classList.add("is-previewing");
-        return;
-      }
-
-      if (item.getAttribute("href") === "#") event.preventDefault();
-    });
-  });
-  continuationStage.addEventListener("click", (event) => {
-    if (event.target instanceof Element && event.target.closest(".fan-work")) return;
-    previewedWork?.classList.remove("is-previewing");
-    previewedWork = null;
-  });
   window.addEventListener("resize", resize);
   window.addEventListener("beforeunload", () => {
     if (endingTimer !== null) window.clearTimeout(endingTimer);

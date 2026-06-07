@@ -1229,7 +1229,7 @@ a.media-strip:hover {
   overflow-y: auto;
   color: #eceeeb;
   background: #9ea19e;
-  pointer-events: none;
+  pointer-events: auto;
   transform: translateX(100%);
   transition: transform 850ms cubic-bezier(.76, 0, .24, 1);
 }
@@ -1545,6 +1545,34 @@ a.media-strip:hover {
   transition: opacity 180ms ease;
 }
 
+.fan-work:has(.fan-work-preview)::before {
+  content: none;
+}
+
+.fan-work-preview {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  filter: grayscale(1) blur(16px) contrast(.84);
+  transform: scale(1.12);
+  transition:
+    opacity 220ms ease,
+    filter 560ms cubic-bezier(.22, 1, .36, 1),
+    transform 560ms cubic-bezier(.22, 1, .36, 1);
+  pointer-events: none;
+}
+
+.fan-work.is-previewing .fan-work-preview {
+  opacity: 1;
+  filter: grayscale(0) blur(0) contrast(1);
+  transform: scale(1);
+}
+
 .fan-work::after {
   position: absolute;
   z-index: 1;
@@ -1608,6 +1636,19 @@ a.media-strip:hover {
 .fan-work:active small,
 .fan-work.is-previewing span,
 .fan-work.is-previewing small {
+  opacity: 0;
+}
+
+.fan-work:has(.fan-work-preview):hover .fan-work-preview,
+.fan-work:has(.fan-work-preview):focus .fan-work-preview,
+.fan-work:has(.fan-work-preview):focus-visible .fan-work-preview {
+  opacity: 1;
+  filter: grayscale(0) blur(0) contrast(1);
+  transform: scale(1);
+}
+
+.fan-work:has(.fan-work-preview):focus span,
+.fan-work:has(.fan-work-preview):focus small {
   opacity: 0;
 }
 
