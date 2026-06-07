@@ -1333,57 +1333,29 @@ a.media-strip:hover {
   left: 50%;
   width: min(42vw, 630px);
   height: 112vh;
+  overflow: visible;
+  fill: none;
   pointer-events: none;
   transform: translateX(-50%);
 }
 
 .fan-v-outline {
   z-index: 4;
-  border-top: 1px solid rgb(239 241 238 / 70%);
-}
-
-.fan-v-outline::before,
-.fan-v-outline::after,
-.fan-v-outer::before,
-.fan-v-outer::after {
-  position: absolute;
-  top: 0;
-  height: 104%;
-  content: "";
-  transform-origin: top;
-}
-
-.fan-v-outline::before {
-  left: 0;
-  width: 1px;
-  background: rgb(239 241 238 / 70%);
-  transform: rotate(-10.7deg);
-}
-
-.fan-v-outline::after {
-  right: 0;
-  width: 1px;
-  background: rgb(239 241 238 / 70%);
-  transform: rotate(10.7deg);
+  stroke: rgb(239 241 238 / 76%);
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
 }
 
 .fan-v-outer {
   z-index: 3;
   width: min(45vw, 674px);
-}
-
-.fan-v-outer::before {
-  left: 0;
-  width: 6px;
-  background: rgb(235 238 234 / 54%);
-  transform: rotate(-11.4deg);
-}
-
-.fan-v-outer::after {
-  right: 0;
-  width: 6px;
-  background: rgb(235 238 234 / 54%);
-  transform: rotate(11.4deg);
+  stroke: rgb(235 238 234 / 54%);
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-width: 6;
+  vector-effect: non-scaling-stroke;
 }
 
 .fan-gallery {
@@ -1520,10 +1492,12 @@ a.media-strip:hover {
   }
 
   .fan-gallery {
-    top: 20vh;
-    width: min(25vw, 390px);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    top: 18vh;
+    width: min(22vw, 330px);
+    height: 94vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 10px;
     padding-top: 0;
   }
 
@@ -1536,12 +1510,12 @@ a.media-strip:hover {
   }
 
   .fan-gallery .fan-work {
-    min-height: clamp(132px, 20vh, 190px);
+    min-height: 0;
     padding: 18px;
   }
 
   .fan-gallery-lower {
-    top: 120vh;
+    top: 112vh;
     right: clamp(28px, 3vw, 48px);
     left: clamp(28px, 3vw, 48px);
     gap: 14px;
