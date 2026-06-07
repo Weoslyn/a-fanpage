@@ -19,6 +19,7 @@ export const setupIntroExperience = () => {
   const continuationStage =
     document.querySelector<HTMLElement>("#continuation-stage");
   const fanArchive = document.querySelector<HTMLElement>(".fan-archive");
+  const fanPanel = document.querySelector<HTMLElement>(".fan-v-panel");
   const endingTrigger = document.querySelector<HTMLButtonElement>("#ending-trigger");
   const endingTransition = document.querySelector<HTMLElement>("#ending-transition");
   const hotspots = Array.from(
@@ -41,6 +42,7 @@ export const setupIntroExperience = () => {
     !continuationBack ||
     !continuationStage ||
     !fanArchive ||
+    !fanPanel ||
     !endingTrigger ||
     !endingTransition
   ) {
@@ -205,9 +207,11 @@ export const setupIntroExperience = () => {
   });
   const fanTilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
   continuationStage.addEventListener("pointermove", (event) => {
-    const bounds = continuationStage.getBoundingClientRect();
-    fanTilt.targetX = ((event.clientY - bounds.top) / bounds.height - 0.5) * -5;
-    fanTilt.targetY = ((event.clientX - bounds.left) / bounds.width - 0.5) * 7;
+    const bounds = fanPanel.getBoundingClientRect();
+    const x = Math.max(-0.5, Math.min(0.5, (event.clientX - bounds.left) / bounds.width - 0.5));
+    const y = Math.max(-0.5, Math.min(0.5, (event.clientY - bounds.top) / bounds.height - 0.5));
+    fanTilt.targetX = y * -14;
+    fanTilt.targetY = x * 18;
   });
   continuationStage.addEventListener("pointerleave", () => {
     fanTilt.targetX = 0;
@@ -261,6 +265,8 @@ export const setupIntroExperience = () => {
     fanTilt.y += (fanTilt.targetY - fanTilt.y) * 0.08;
     fanArchive.style.setProperty("--fan-tilt-x", `${fanTilt.x.toFixed(2)}deg`);
     fanArchive.style.setProperty("--fan-tilt-y", `${fanTilt.y.toFixed(2)}deg`);
+    fanArchive.style.setProperty("--fan-shift-x", `${(fanTilt.y * -0.85).toFixed(2)}px`);
+    fanArchive.style.setProperty("--fan-shift-y", `${(fanTilt.x * 0.7).toFixed(2)}px`);
 
     requestAnimationFrame(render);
   };

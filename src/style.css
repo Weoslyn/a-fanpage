@@ -1979,6 +1979,8 @@ a.media-strip:hover {
 .fan-archive {
   --fan-tilt-x: 0deg;
   --fan-tilt-y: 0deg;
+  --fan-shift-x: 0px;
+  --fan-shift-y: 0px;
   --fan-edge-left: 24%;
   --fan-edge-right: 76%;
   min-height: 285vh;
@@ -1991,7 +1993,7 @@ a.media-strip:hover {
   top: clamp(72px, 9vh, 112px);
   left: 50%;
   width: min(62vw, 760px);
-  opacity: 0;
+  opacity: 1;
   transform: translateX(-50%);
 }
 
@@ -2004,12 +2006,13 @@ a.media-strip:hover {
 .fan-archive-heading h2 span {
   display: block;
   width: 100%;
+  font: inherit;
+  letter-spacing: 0;
   text-align: center;
 }
 
 .fan-v-panel,
-.fan-v-outline,
-.fan-v-outer {
+.fan-v-outline {
   top: 0;
   left: 50%;
   width: min(52vw, 700px);
@@ -2018,23 +2021,26 @@ a.media-strip:hover {
   transform-origin: 50% 100%;
 }
 
-.fan-v-outline,
-.fan-v-outer {
+.fan-v-outline {
   opacity: 1;
   transform: translateX(-50%);
 }
 
-.fan-v-outer {
-  width: min(56vw, 750px);
-}
-
 .fan-v-panel {
   clip-path: polygon(0 0, 50% 100%, 100% 0);
+  perspective: 850px;
 }
 
 .fan-portrait-motion {
   width: 100%;
   height: 100%;
+  transform:
+    rotateX(var(--fan-tilt-x))
+    rotateY(var(--fan-tilt-y))
+    scale(1.025);
+  transform-origin: 50% 48%;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .fan-v-panel img {
@@ -2043,17 +2049,14 @@ a.media-strip:hover {
   object-fit: cover;
   object-position: 42% 30%;
   transform:
-    translateX(-9%)
-    scale(1.04)
-    rotateX(var(--fan-tilt-x))
-    rotateY(var(--fan-tilt-y));
+    translate3d(calc(-9% + var(--fan-shift-x)), var(--fan-shift-y), 34px)
+    scale(1.08);
   transform-origin: 50% 58%;
   transform-style: preserve-3d;
   will-change: transform;
 }
 
-.fan-v-outline path,
-.fan-v-outer path {
+.fan-v-outline path {
   stroke-dasharray: none;
   stroke-dashoffset: 0;
 }
