@@ -1581,19 +1581,22 @@ a.media-strip:hover {
 
 .fan-work:hover::before,
 .fan-work:focus-visible::before,
-.fan-work:active::before {
+.fan-work:active::before,
+.fan-work.is-previewing::before {
   animation: fan-work-focus 780ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
 .fan-work:hover::after,
 .fan-work:focus-visible::after,
-.fan-work:active::after {
+.fan-work:active::after,
+.fan-work.is-previewing::after {
   animation: fan-work-curtain 720ms cubic-bezier(.65, 0, .2, 1) both;
 }
 
 .fan-work:nth-child(even):hover::after,
 .fan-work:nth-child(even):focus-visible::after,
-.fan-work:nth-child(even):active::after {
+.fan-work:nth-child(even):active::after,
+.fan-work:nth-child(even).is-previewing::after {
   animation-name: fan-work-curtain-reverse;
 }
 
@@ -1602,7 +1605,9 @@ a.media-strip:hover {
 .fan-work:focus-visible span,
 .fan-work:focus-visible small,
 .fan-work:active span,
-.fan-work:active small {
+.fan-work:active small,
+.fan-work.is-previewing span,
+.fan-work.is-previewing small {
   opacity: 0;
 }
 
@@ -1730,8 +1735,22 @@ a.media-strip:hover {
     left: 9vmin;
   }
 
+  #app.is-name-focused .name-focus {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    place-items: center;
+    transform: none;
+  }
+
   #app.is-name-focused .archive-name {
+    max-width: 92vw;
     font-size: clamp(30px, 9vw, 54px);
+    text-align: center;
   }
 
   .voice-header,

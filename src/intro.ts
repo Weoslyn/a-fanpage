@@ -226,8 +226,26 @@ export const setupIntroExperience = () => {
       fanTilt.targetY = y * 6;
     },
   );
-  document.querySelectorAll<HTMLAnchorElement>(".fan-work[href='#']").forEach((item) => {
-    item.addEventListener("click", (event) => event.preventDefault());
+  const fanWorks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".fan-work"));
+  let previewedWork: HTMLAnchorElement | null = null;
+  fanWorks.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (previewedWork !== item) {
+        event.preventDefault();
+        previewedWork?.classList.remove("is-previewing");
+        previewedWork = item;
+        item.classList.add("is-previewing");
+        return;
+      }
+
+      if (item.getAttribute("href") === "#") event.preventDefault();
+    });
+  });
+  continuationStage.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest(".fan-work")) return;
+    previewedWork?.classList.remove("is-previewing");
+    previewedWork = null;
   });
   window.addEventListener("resize", resize);
   window.addEventListener("beforeunload", () => {
