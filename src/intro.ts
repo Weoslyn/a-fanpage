@@ -16,6 +16,9 @@ export const setupIntroExperience = () => {
   const continueButton = document.querySelector<HTMLButtonElement>("#continue-button");
   const introBack = document.querySelector<HTMLButtonElement>("#intro-back");
   const continuationBack = document.querySelector<HTMLButtonElement>("#continuation-back");
+  const continuationStage =
+    document.querySelector<HTMLElement>("#continuation-stage");
+  const fanArchive = document.querySelector<HTMLElement>(".fan-archive");
   const hotspots = Array.from(
     document.querySelectorAll<HTMLButtonElement>(".portrait-hotspot"),
   );
@@ -33,7 +36,9 @@ export const setupIntroExperience = () => {
     !drawerClose ||
     !continueButton ||
     !introBack ||
-    !continuationBack
+    !continuationBack ||
+    !continuationStage ||
+    !fanArchive
   ) {
     return;
   }
@@ -184,6 +189,23 @@ export const setupIntroExperience = () => {
   continuationBack.addEventListener("click", () => {
     app.classList.remove("is-fourth-page");
   });
+  const fanTilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
+  continuationStage.addEventListener("pointermove", (event) => {
+    const bounds = continuationStage.getBoundingClientRect();
+    fanTilt.targetX = ((event.clientY - bounds.top) / bounds.height - 0.5) * -5;
+    fanTilt.targetY = ((event.clientX - bounds.left) / bounds.width - 0.5) * 7;
+  });
+  continuationStage.addEventListener("pointerleave", () => {
+    fanTilt.targetX = 0;
+    fanTilt.targetY = 0;
+  });
+  subscribeToDeviceTilt(
+    () => app.classList.contains("is-fourth-page"),
+    (x, y) => {
+      fanTilt.targetX = x * -4;
+      fanTilt.targetY = y * 6;
+    },
+  );
   document.querySelectorAll<HTMLAnchorElement>(".fan-work[href='#']").forEach((item) => {
     item.addEventListener("click", (event) => event.preventDefault());
   });
@@ -216,6 +238,10 @@ export const setupIntroExperience = () => {
     stage.style.setProperty("--intro-grid-y", `${(tilt.x * 1.7).toFixed(2)}px`);
     stage.style.setProperty("--intro-id-x", `${(tilt.y * -0.72).toFixed(2)}px`);
     stage.style.setProperty("--intro-id-y", `${(tilt.x * 0.58).toFixed(2)}px`);
+    fanTilt.x += (fanTilt.targetX - fanTilt.x) * 0.08;
+    fanTilt.y += (fanTilt.targetY - fanTilt.y) * 0.08;
+    fanArchive.style.setProperty("--fan-tilt-x", `${fanTilt.x.toFixed(2)}deg`);
+    fanArchive.style.setProperty("--fan-tilt-y", `${fanTilt.y.toFixed(2)}deg`);
 
     requestAnimationFrame(render);
   };
