@@ -19,6 +19,8 @@ export const setupIntroExperience = () => {
   const continuationStage =
     document.querySelector<HTMLElement>("#continuation-stage");
   const fanArchive = document.querySelector<HTMLElement>(".fan-archive");
+  const endingTrigger = document.querySelector<HTMLButtonElement>("#ending-trigger");
+  const endingTransition = document.querySelector<HTMLElement>("#ending-transition");
   const hotspots = Array.from(
     document.querySelectorAll<HTMLButtonElement>(".portrait-hotspot"),
   );
@@ -38,7 +40,9 @@ export const setupIntroExperience = () => {
     !introBack ||
     !continuationBack ||
     !continuationStage ||
-    !fanArchive
+    !fanArchive ||
+    !endingTrigger ||
+    !endingTransition
   ) {
     return;
   }
@@ -187,7 +191,17 @@ export const setupIntroExperience = () => {
     app.classList.add("is-fourth-page");
   });
   continuationBack.addEventListener("click", () => {
+    app.classList.remove("is-ending-transition", "is-ending-page");
     app.classList.remove("is-fourth-page");
+  });
+  let endingTimer: number | null = null;
+  endingTrigger.addEventListener("click", () => {
+    if (app.classList.contains("is-ending-transition")) return;
+    app.classList.add("is-ending-transition");
+    endingTransition.setAttribute("aria-hidden", "false");
+    endingTimer = window.setTimeout(() => {
+      app.classList.add("is-ending-page");
+    }, 1850);
   });
   const fanTilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
   continuationStage.addEventListener("pointermove", (event) => {
@@ -200,7 +214,9 @@ export const setupIntroExperience = () => {
     fanTilt.targetY = 0;
   });
   subscribeToDeviceTilt(
-    () => app.classList.contains("is-fourth-page"),
+    () =>
+      app.classList.contains("is-fourth-page") &&
+      !app.classList.contains("is-ending-page"),
     (x, y) => {
       fanTilt.targetX = x * -4;
       fanTilt.targetY = y * 6;
@@ -210,6 +226,9 @@ export const setupIntroExperience = () => {
     item.addEventListener("click", (event) => event.preventDefault());
   });
   window.addEventListener("resize", resize);
+  window.addEventListener("beforeunload", () => {
+    if (endingTimer !== null) window.clearTimeout(endingTimer);
+  });
 
   setupFluidCursor(
     stage,

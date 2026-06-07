@@ -290,6 +290,8 @@ const init = async () => {
       "is-voice-page",
       "is-third-page",
       "is-fourth-page",
+      "is-ending-transition",
+      "is-ending-page",
     );
     hint.textContent = "按住并滑动一次，打开隐藏图层";
     setEdgePosition(edgeFromReveal(0));
