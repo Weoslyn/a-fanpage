@@ -48,6 +48,8 @@ export const setupIntroExperience = () => {
   const fanPanel = document.querySelector<HTMLElement>(".fan-v-panel");
   const endingTrigger = document.querySelector<HTMLButtonElement>("#ending-trigger");
   const endingTransition = document.querySelector<HTMLElement>("#ending-transition");
+  const endingReset = document.querySelector<HTMLButtonElement>("#ending-reset");
+  const resetButton = document.querySelector<HTMLButtonElement>("#reset-button");
   const hotspots = Array.from(
     document.querySelectorAll<HTMLButtonElement>(".portrait-hotspot"),
   );
@@ -70,7 +72,9 @@ export const setupIntroExperience = () => {
     !fanArchive ||
     !fanPanel ||
     !endingTrigger ||
-    !endingTransition
+    !endingTransition ||
+    !endingReset ||
+    !resetButton
   ) {
     return;
   }
@@ -230,6 +234,19 @@ export const setupIntroExperience = () => {
     endingTimer = window.setTimeout(() => {
       app.classList.add("is-ending-page");
     }, 1850);
+  });
+  endingReset.addEventListener("click", () => {
+    if (endingTimer !== null) {
+      window.clearTimeout(endingTimer);
+      endingTimer = null;
+    }
+    continuationStage.scrollTo({ top: 0, behavior: "auto" });
+    endingTransition.setAttribute("aria-hidden", "true");
+    endingTransition.getAnimations().forEach((animation) => animation.cancel());
+    document.querySelectorAll(".fan-work.is-previewing").forEach((item) => {
+      item.classList.remove("is-previewing");
+    });
+    resetButton.click();
   });
   const fanTilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
   continuationStage.addEventListener("pointermove", (event) => {

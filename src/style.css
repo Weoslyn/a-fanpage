@@ -2178,7 +2178,7 @@ a.media-strip:hover {
 .ending-trigger {
   position: absolute;
   z-index: 10;
-  bottom: 78px;
+  bottom: 128px;
   left: 50%;
   display: grid;
   width: 58px;
@@ -2220,7 +2220,7 @@ a.media-strip:hover {
 
 .ending-transition-ring {
   position: absolute;
-  top: calc(100% - 107px);
+  top: calc(100% - 157px);
   left: 50%;
   display: grid;
   width: 58px;
@@ -2360,6 +2360,18 @@ a.media-strip:hover {
   padding-top: 4px;
 }
 
+.ending-author-heading {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.ending-author-heading a {
+  font: 500 8px/1.4 "DM Mono", monospace;
+  letter-spacing: .08em;
+}
+
 .ending-author-copy span {
   display: block;
   margin-top: 14px;
@@ -2421,9 +2433,39 @@ a.media-strip:hover {
   color: rgb(239 241 238 / 58%);
 }
 
+.ending-reset {
+  position: absolute;
+  z-index: 2;
+  bottom: clamp(26px, 4vw, 58px);
+  left: clamp(28px, 5vw, 78px);
+  padding: 7px 0;
+  border: 0;
+  border-bottom: 1px solid rgb(239 241 238 / 48%);
+  color: #eef0ed;
+  background: transparent;
+  font: 500 9px/1 "DM Mono", monospace;
+  letter-spacing: .16em;
+  cursor: pointer;
+}
+
+.ending-reset:hover,
+.ending-reset:focus-visible {
+  border-bottom-color: #fff;
+  color: #fff;
+}
+
+.ending-reset:focus-visible {
+  outline: 1px solid #eef0ed;
+  outline-offset: 5px;
+}
+
+.ending-stage footer {
+  padding-left: 84px;
+}
+
 @keyframes ending-ring-journey {
   0% {
-    top: calc(100% - 107px);
+    top: calc(100% - 157px);
     left: 50%;
     width: 58px;
     height: 58px;
@@ -2629,9 +2671,18 @@ a.media-strip:hover {
     font-size: 7px;
   }
 
+  .ending-reset {
+    bottom: 24px;
+    left: 24px;
+  }
+
+  .ending-stage footer {
+    padding-left: 68px;
+  }
+
   @keyframes ending-ring-journey {
     0% {
-      top: calc(100% - 107px);
+      top: calc(100% - 157px);
       left: 50%;
       width: 58px;
       height: 58px;
