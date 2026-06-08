@@ -10,50 +10,43 @@ type MusicTrack = {
   captions: Caption[];
 };
 
-const TRACKS: Record<"early" | "late", MusicTrack> = {
-  early: {
+const TRACKS: MusicTrack[] = [
+  {
     src: "audio/prelude-soft.m4a",
     captions: [],
   },
-  late: {
+  {
     src: "audio/so-high-soft.m4a",
     captions: [],
   },
-};
+];
 
 const TARGET_VOLUME = 0.12;
 const FADE_DURATION = 900;
 
 export const setupMusicExperience = () => {
-  const app = document.querySelector<HTMLElement>("#app");
   const toggle = document.querySelector<HTMLButtonElement>("#music-toggle");
   const subtitles = document.querySelector<HTMLElement>("#music-subtitles");
   const primary = document.querySelector<HTMLElement>("#music-subtitle-primary");
   const secondary = document.querySelector<HTMLElement>("#music-subtitle-secondary");
 
-  if (!app || !toggle || !subtitles || !primary || !secondary) return;
+  if (!toggle || !subtitles || !primary || !secondary) return;
 
-  const audio = {
-    early: new Audio(`${import.meta.env.BASE_URL}${TRACKS.early.src}`),
-    late: new Audio(`${import.meta.env.BASE_URL}${TRACKS.late.src}`),
-  };
-  audio.early.loop = true;
-  audio.late.loop = true;
-  audio.early.preload = "metadata";
-  audio.late.preload = "metadata";
+  const audio = TRACKS.map((track) => {
+    const element = new Audio(`${import.meta.env.BASE_URL}${track.src}`);
+    element.preload = "metadata";
+    element.volume = 0;
+    return element;
+  });
 
-  let activeKey: keyof typeof audio = "early";
+  let activeIndex = 0;
   let started = false;
   let muted = false;
   let fadeFrame = 0;
   let activeCaption = -1;
+  let resetTimer: number | null = null;
 
-  const pageTrack = (): keyof typeof audio =>
-    app.classList.contains("is-fourth-page") ||
-    app.classList.contains("is-ending-transition") ||
-    app.classList.contains("is-ending-page")
-      ? "late"
-      : "early";
+  const currentAudio = () => audio[activeIndex];
 
   const updateToggle = () => {
     toggle.classList.toggle("is-muted", muted);
@@ -66,6 +59,7 @@ export const setupMusicExperience = () => {
     from: number,
     to: number,
     pauseWhenDone = false,
+    onComplete?: () => void,
   ) => {
     const start = performance.now();
     const step = (now: number) => {
@@ -73,16 +67,17 @@ export const setupMusicExperience = () => {
       element.volume = from + (to - from) * progress;
       if (progress < 1) {
         fadeFrame = requestAnimationFrame(step);
-      } else if (pauseWhenDone) {
-        element.pause();
+      } else {
+        if (pauseWhenDone) element.pause();
+        onComplete?.();
       }
     };
     fadeFrame = requestAnimationFrame(step);
   };
 
   const showCaption = () => {
-    const current = audio[activeKey];
-    const captions = TRACKS[activeKey].captions;
+    const current = currentAudio();
+    const captions = TRACKS[activeIndex].captions;
     const index = captions.findIndex(
       (caption) => current.currentTime >= caption.start && current.currentTime < caption.end,
     );
@@ -94,64 +89,70 @@ export const setupMusicExperience = () => {
     secondary.textContent = caption?.secondary ?? "";
   };
 
-  const switchTrack = async (nextKey: keyof typeof audio) => {
-    if (nextKey === activeKey) return;
-    cancelAnimationFrame(fadeFrame);
-    const previous = audio[activeKey];
-    activeKey = nextKey;
-    activeCaption = -1;
-    const next = audio[activeKey];
-    fade(previous, previous.volume, 0, true);
-    if (started && !muted) {
-      next.volume = 0;
-      try {
-        await next.play();
-        fade(next, 0, TARGET_VOLUME);
-      } catch {
-        started = false;
-      }
-    }
-    showCaption();
-  };
-
-  const start = async () => {
-    if (started || muted) return;
-    activeKey = pageTrack();
-    const current = audio[activeKey];
-    current.volume = 0;
+  const playActive = async (fadeIn = true) => {
+    if (muted) return;
+    const current = currentAudio();
+    current.volume = fadeIn ? 0 : TARGET_VOLUME;
     try {
       await current.play();
       started = true;
-      fade(current, 0, TARGET_VOLUME);
+      if (fadeIn) fade(current, 0, TARGET_VOLUME);
     } catch {
       started = false;
     }
   };
 
-  const observer = new MutationObserver(() => {
-    void switchTrack(pageTrack());
-  });
-  observer.observe(app, { attributes: true, attributeFilter: ["class"] });
-
-  const unlock = () => {
-    void start();
+  const advance = () => {
+    activeIndex = (activeIndex + 1) % audio.length;
+    activeCaption = -1;
+    currentAudio().currentTime = 0;
+    void playActive(true);
   };
+
+  audio.forEach((element) => {
+    element.addEventListener("ended", advance);
+  });
+
+  const start = () => {
+    if (started || muted) return;
+    void playActive(true);
+  };
+
+  const unlock = () => start();
   window.addEventListener("pointerdown", unlock, { once: true, passive: true });
   window.addEventListener("keydown", unlock, { once: true });
 
-  toggle.addEventListener("click", async (event) => {
+  toggle.addEventListener("click", (event) => {
     event.stopPropagation();
     muted = !muted;
     cancelAnimationFrame(fadeFrame);
     updateToggle();
     if (muted) {
-      const current = audio[activeKey];
+      const current = currentAudio();
       fade(current, current.volume, 0, true);
       subtitles.hidden = true;
       return;
     }
     started = false;
-    await start();
+    start();
+  });
+
+  window.addEventListener("fanpage:reset-music", () => {
+    if (resetTimer !== null) window.clearTimeout(resetTimer);
+    cancelAnimationFrame(fadeFrame);
+    const current = currentAudio();
+    fade(current, current.volume, 0, true);
+    resetTimer = window.setTimeout(() => {
+      audio.forEach((element) => {
+        element.pause();
+        element.currentTime = 0;
+        element.volume = 0;
+      });
+      activeIndex = 0;
+      activeCaption = -1;
+      started = false;
+      if (!muted) void playActive(true);
+    }, FADE_DURATION);
   });
 
   const render = () => {

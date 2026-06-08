@@ -250,6 +250,7 @@ export const setupIntroExperience = () => {
     }, 1850);
   });
   endingReset.addEventListener("click", () => {
+    window.dispatchEvent(new CustomEvent("fanpage:reset-music"));
     if (endingTimer !== null) {
       window.clearTimeout(endingTimer);
       endingTimer = null;

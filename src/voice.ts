@@ -43,7 +43,18 @@ export const setupVoiceExperience = () => {
   );
   const audio = new Audio();
   let activeButton: HTMLButtonElement | null = null;
+  let motionPermissionRequested = false;
   const tilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
+
+  const requestThirdPageMotion = () => {
+    if (motionPermissionRequested) return;
+    motionPermissionRequested = true;
+    void requestMotionPermission();
+  };
+  stage.addEventListener("pointerdown", requestThirdPageMotion, {
+    capture: true,
+    passive: true,
+  });
 
   const stopAudio = () => {
     audio.pause();
@@ -73,7 +84,6 @@ export const setupVoiceExperience = () => {
       button.innerHTML =
         '<i aria-hidden="true"></i><span class="voice-wave" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span>';
       button.addEventListener("click", async () => {
-        await requestMotionPermission();
         if (!track.src) {
           status.textContent = `${track.title} · 音频待接入`;
           return;
@@ -151,7 +161,6 @@ export const setupVoiceExperience = () => {
   );
 
   continueButton.addEventListener("click", async () => {
-    await requestMotionPermission();
     stopAudio();
     app.classList.add("is-third-page");
   });
