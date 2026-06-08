@@ -22,6 +22,7 @@ const TRACKS: MusicTrack[] = [
 ];
 
 const TARGET_VOLUME = 0.12;
+const DUCKED_VOLUME = 0.006;
 const FADE_DURATION = 900;
 
 export const setupMusicExperience = () => {
@@ -45,8 +46,10 @@ export const setupMusicExperience = () => {
   let fadeFrame = 0;
   let activeCaption = -1;
   let resetTimer: number | null = null;
+  let ducked = false;
 
   const currentAudio = () => audio[activeIndex];
+  const playbackVolume = () => (ducked ? DUCKED_VOLUME : TARGET_VOLUME);
 
   const updateToggle = () => {
     toggle.classList.toggle("is-muted", muted);
@@ -92,11 +95,11 @@ export const setupMusicExperience = () => {
   const playActive = async (fadeIn = true) => {
     if (muted) return;
     const current = currentAudio();
-    current.volume = fadeIn ? 0 : TARGET_VOLUME;
+    current.volume = fadeIn ? 0 : playbackVolume();
     try {
       await current.play();
       started = true;
-      if (fadeIn) fade(current, 0, TARGET_VOLUME);
+      if (fadeIn) fade(current, 0, playbackVolume());
     } catch {
       started = false;
     }
@@ -153,6 +156,15 @@ export const setupMusicExperience = () => {
       started = false;
       if (!muted) void playActive(true);
     }, FADE_DURATION);
+  });
+
+  window.addEventListener("fanpage:media-audio", (event) => {
+    const detail = (event as CustomEvent<{ active?: boolean }>).detail;
+    ducked = Boolean(detail?.active);
+    if (!started || muted) return;
+    cancelAnimationFrame(fadeFrame);
+    const current = currentAudio();
+    fade(current, current.volume, playbackVolume());
   });
 
   const render = () => {

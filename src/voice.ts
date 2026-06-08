@@ -46,16 +46,6 @@ export const setupVoiceExperience = () => {
   let motionPermissionRequested = false;
   const tilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
 
-  const requestThirdPageMotion = () => {
-    if (motionPermissionRequested) return;
-    motionPermissionRequested = true;
-    void requestMotionPermission();
-  };
-  stage.addEventListener("pointerdown", requestThirdPageMotion, {
-    capture: true,
-    passive: true,
-  });
-
   const stopAudio = () => {
     audio.pause();
     audio.currentTime = 0;
@@ -161,6 +151,10 @@ export const setupVoiceExperience = () => {
   );
 
   continueButton.addEventListener("click", async () => {
+    if (!motionPermissionRequested) {
+      motionPermissionRequested = true;
+      await requestMotionPermission();
+    }
     stopAudio();
     app.classList.add("is-third-page");
   });

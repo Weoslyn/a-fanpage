@@ -5,25 +5,62 @@ import { subscribeToDeviceTilt } from "./motion";
 export const setupIntroExperience = () => {
   const fanWorks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".fan-work"));
   let previewedWork: HTMLAnchorElement | null = null;
+
+  const stopPreview = (item: HTMLAnchorElement | null, reset = true) => {
+    if (!item) return;
+    item.classList.remove("is-previewing");
+    const video = item.querySelector<HTMLVideoElement>("video.fan-work-preview");
+    if (!video) return;
+    video.pause();
+    if (reset) video.currentTime = 0;
+    window.dispatchEvent(
+      new CustomEvent("fanpage:media-audio", { detail: { active: false } }),
+    );
+  };
+
+  fanWorks.forEach((item) => {
+    const video = item.querySelector<HTMLVideoElement>("video.fan-work-preview");
+    if (!video) return;
+    video.volume = 0.86;
+    video.addEventListener("ended", () => {
+      window.dispatchEvent(
+        new CustomEvent("fanpage:media-audio", { detail: { active: false } }),
+      );
+    });
+  });
+
   document.addEventListener(
     "click",
     (event) => {
       if (!(event.target instanceof Element)) return;
       const item = event.target.closest<HTMLAnchorElement>(".fan-work");
       if (!item) {
-        previewedWork?.classList.remove("is-previewing");
+        stopPreview(previewedWork);
         previewedWork = null;
         return;
       }
 
       if (previewedWork !== item) {
         event.preventDefault();
-        previewedWork?.classList.remove("is-previewing");
+        stopPreview(previewedWork);
         previewedWork = item;
         item.classList.add("is-previewing");
+        const video = item.querySelector<HTMLVideoElement>("video.fan-work-preview");
+        if (video) {
+          video.currentTime = 0;
+          window.dispatchEvent(
+            new CustomEvent("fanpage:media-audio", { detail: { active: true } }),
+          );
+          void video.play().catch(() => {
+            window.dispatchEvent(
+              new CustomEvent("fanpage:media-audio", { detail: { active: false } }),
+            );
+          });
+        }
         return;
       }
 
+      stopPreview(previewedWork, false);
       if (item.getAttribute("href") === "#") event.preventDefault();
     },
     true,

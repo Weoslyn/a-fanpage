@@ -1567,6 +1567,10 @@ a.media-strip:hover {
   pointer-events: none;
 }
 
+.fan-work--video .fan-work-preview {
+  background: #171918;
+}
+
 .fan-work.is-previewing .fan-work-preview {
   opacity: 1;
   filter: grayscale(0) blur(0) contrast(1);
@@ -2228,6 +2232,20 @@ a.media-strip:hover {
   transform: translateX(-50%);
 }
 
+.fan-scroll-hint span,
+.fan-scroll-hint small {
+  display: block;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.fan-scroll-hint small {
+  margin-top: 6px;
+  font: 500 8px/1.45 "DM Mono", monospace;
+  opacity: .72;
+  white-space: nowrap;
+}
+
 .fan-works-grid {
   position: absolute;
   z-index: 6;
@@ -2704,6 +2722,12 @@ a.media-strip:hover {
     top: calc(84vh + 16px);
     width: 100%;
     text-align: center;
+  }
+
+  .fan-scroll-hint small {
+    padding: 0 18px;
+    font-size: 7px;
+    white-space: normal;
   }
 
   .fan-works-grid {
