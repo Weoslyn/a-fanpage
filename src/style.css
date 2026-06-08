@@ -1607,6 +1607,17 @@ a.media-strip:hover {
   transition: opacity 180ms ease;
 }
 
+.fan-work-author {
+  position: relative;
+  z-index: 1;
+  margin-top: 7px;
+  font: 500 9px/1.2 "DM Mono", monospace;
+  font-style: normal;
+  letter-spacing: 0;
+  opacity: .74;
+  transition: opacity 180ms ease;
+}
+
 .fan-work:hover::before,
 .fan-work:focus-visible::before,
 .fan-work:active::before,
@@ -1629,12 +1640,16 @@ a.media-strip:hover {
 }
 
 .fan-work:hover span,
+.fan-work:hover .fan-work-author,
 .fan-work:hover small,
 .fan-work:focus-visible span,
+.fan-work:focus-visible .fan-work-author,
 .fan-work:focus-visible small,
 .fan-work:active span,
+.fan-work:active .fan-work-author,
 .fan-work:active small,
 .fan-work.is-previewing span,
+.fan-work.is-previewing .fan-work-author,
 .fan-work.is-previewing small {
   opacity: 0;
 }
@@ -1648,6 +1663,7 @@ a.media-strip:hover {
 }
 
 .fan-work:has(.fan-work-preview):focus span,
+.fan-work:has(.fan-work-preview):focus .fan-work-author,
 .fan-work:has(.fan-work-preview):focus small {
   opacity: 0;
 }
@@ -2062,6 +2078,11 @@ a.media-strip:hover {
     font-size: 7px;
   }
 
+  .fan-work-author {
+    margin-top: 5px;
+    font-size: 7px;
+  }
+
   .fan-gallery-lower {
     top: 130vh;
     right: 10px;
@@ -2082,6 +2103,11 @@ a.media-strip:hover {
   .fan-gallery-lower .fan-work small {
     font-size: 6px;
     letter-spacing: .08em;
+  }
+
+  .fan-gallery-lower .fan-work .fan-work-author {
+    margin-top: 4px;
+    font-size: 6px;
   }
 
   .fan-archive-end {
