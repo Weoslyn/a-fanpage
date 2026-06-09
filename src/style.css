@@ -1571,6 +1571,23 @@ a.media-strip:hover {
   background: #171918;
 }
 
+.fan-work--audio {
+  border-color: rgb(226 236 232 / 52%);
+  background:
+    linear-gradient(135deg, rgb(233 239 235 / 7%), transparent 55%),
+    rgb(47 50 48 / 14%);
+}
+
+.fan-work--audio::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(73 78 75 / 96%),
+      rgb(220 229 224 / 86%) 52%,
+      rgb(73 78 75 / 94%)
+    );
+}
+
 .fan-work.is-previewing .fan-work-preview {
   opacity: 1;
   filter: grayscale(0) blur(0) contrast(1);
