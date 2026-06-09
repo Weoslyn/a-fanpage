@@ -2961,6 +2961,15 @@ a.media-strip:hover {
 }
 
 @media (max-width: 760px) {
+  #app.is-page-transition.is-fourth-page .continuation-stage {
+    animation: none;
+  }
+
+  #app.is-page-transition .intro-stage {
+    filter: grayscale(.18) brightness(.88);
+    scale: 1;
+  }
+
   .music-toggle {
     right: max(16px, env(safe-area-inset-right));
     bottom: max(50px, calc(env(safe-area-inset-bottom) + 14px));
