@@ -533,8 +533,8 @@ h1 {
   pointer-events: none;
 }
 
-#app:not(.is-voice-page) .motion-permission,
-#app.is-third-page .motion-permission {
+#app:not(.is-third-page) .motion-permission,
+#app.is-fourth-page .motion-permission {
   opacity: 0;
   pointer-events: none;
 }
