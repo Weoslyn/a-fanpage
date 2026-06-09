@@ -1,4 +1,4 @@
-import { subscribeToDeviceTilt } from "./motion";
+import { requestMotionPermission, subscribeToDeviceTilt } from "./motion";
 import { setupRain } from "./rain";
 import { setupFluidCursor } from "./fluid";
 
@@ -21,6 +21,8 @@ export const setupVoiceExperience = () => {
   const continueButton =
     document.querySelector<HTMLButtonElement>("#voice-continue-button");
   const status = document.querySelector<HTMLElement>("#voice-status");
+  const motionPermission =
+    document.querySelector<HTMLButtonElement>("#motion-permission");
   const rainBack = document.querySelector<HTMLCanvasElement>("#rain-canvas-back");
   const rainFront = document.querySelector<HTMLCanvasElement>("#rain-canvas-front");
   const smokeBack = document.querySelector<HTMLCanvasElement>("#voice-smoke-back");
@@ -32,6 +34,7 @@ export const setupVoiceExperience = () => {
     !trackList ||
     !continueButton ||
     !status ||
+    !motionPermission ||
     !rainBack ||
     !rainFront ||
     !smokeBack
@@ -44,6 +47,26 @@ export const setupVoiceExperience = () => {
   const audio = new Audio();
   let activeButton: HTMLButtonElement | null = null;
   const tilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
+
+  const setMotionState = (enabled: boolean, denied = false) => {
+    motionPermission.classList.toggle("is-hidden", enabled);
+    motionPermission.classList.toggle("is-denied", denied);
+    motionPermission.querySelector("span")!.textContent = denied
+      ? "请在浏览器设置中允许动作与方向"
+      : "启用动态视角";
+  };
+
+  motionPermission.addEventListener("click", async () => {
+    const granted = await requestMotionPermission();
+    setMotionState(granted, !granted);
+  });
+  window.addEventListener("fanpage:motion-permission", (event) => {
+    const granted = Boolean(
+      (event as CustomEvent<{ granted?: boolean }>).detail?.granted,
+    );
+    setMotionState(granted, !granted);
+  });
+  window.addEventListener("fanpage:motion-active", () => setMotionState(true));
 
   const stopAudio = () => {
     audio.pause();

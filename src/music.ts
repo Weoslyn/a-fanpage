@@ -161,9 +161,20 @@ export const setupMusicExperience = () => {
   window.addEventListener("fanpage:media-audio", (event) => {
     const detail = (event as CustomEvent<{ active?: boolean }>).detail;
     ducked = Boolean(detail?.active);
-    if (!started || muted) return;
+    if (muted) return;
     cancelAnimationFrame(fadeFrame);
     const current = currentAudio();
+    if (current.paused) {
+      current.volume = 0;
+      void current.play().then(() => {
+        started = true;
+        fade(current, 0, playbackVolume());
+      }).catch(() => {
+        started = false;
+      });
+      return;
+    }
+    started = true;
     fade(current, current.volume, playbackVolume());
   });
 

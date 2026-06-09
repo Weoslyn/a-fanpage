@@ -7,29 +7,38 @@ type PermissionAwareDeviceMotionEvent = typeof DeviceMotionEvent & {
 };
 
 export const requestMotionPermission = async () => {
-  const requests: Array<Promise<"granted" | "denied">> = [];
-
-  if (typeof DeviceOrientationEvent !== "undefined") {
-    const orientationEvent =
-      DeviceOrientationEvent as PermissionAwareDeviceOrientationEvent;
-    if (typeof orientationEvent.requestPermission === "function") {
-      requests.push(orientationEvent.requestPermission());
-    }
-  }
-
-  if (typeof DeviceMotionEvent !== "undefined") {
-    const motionEvent = DeviceMotionEvent as PermissionAwareDeviceMotionEvent;
-    if (typeof motionEvent.requestPermission === "function") {
-      requests.push(motionEvent.requestPermission());
-    }
-  }
-
-  if (requests.length === 0) return true;
-
   try {
-    const results = await Promise.all(requests);
-    return results.every((result) => result === "granted");
+    if (typeof DeviceOrientationEvent !== "undefined") {
+      const orientationEvent =
+        DeviceOrientationEvent as PermissionAwareDeviceOrientationEvent;
+      if (typeof orientationEvent.requestPermission === "function") {
+        const granted = (await orientationEvent.requestPermission()) === "granted";
+        window.dispatchEvent(
+          new CustomEvent("fanpage:motion-permission", { detail: { granted } }),
+        );
+        return granted;
+      }
+    }
+
+    if (typeof DeviceMotionEvent !== "undefined") {
+      const motionEvent = DeviceMotionEvent as PermissionAwareDeviceMotionEvent;
+      if (typeof motionEvent.requestPermission === "function") {
+        const granted = (await motionEvent.requestPermission()) === "granted";
+        window.dispatchEvent(
+          new CustomEvent("fanpage:motion-permission", { detail: { granted } }),
+        );
+        return granted;
+      }
+    }
+
+    window.dispatchEvent(
+      new CustomEvent("fanpage:motion-permission", { detail: { granted: true } }),
+    );
+    return true;
   } catch {
+    window.dispatchEvent(
+      new CustomEvent("fanpage:motion-permission", { detail: { granted: false } }),
+    );
     return false;
   }
 };
@@ -44,6 +53,7 @@ export const subscribeToDeviceTilt = (
 
   const handleOrientation = (event: DeviceOrientationEvent) => {
     if (!isActive() || event.beta === null || event.gamma === null) return;
+    window.dispatchEvent(new CustomEvent("fanpage:motion-active"));
     baselineBeta ??= event.beta;
     baselineGamma ??= event.gamma;
     const x = Math.max(-1, Math.min(1, (event.beta - baselineBeta) / 24));
@@ -56,6 +66,7 @@ export const subscribeToDeviceTilt = (
     if (!isActive() || Date.now() - lastOrientationTime < 250) return;
     const gravity = event.accelerationIncludingGravity;
     if (!gravity || gravity.x === null || gravity.y === null) return;
+    window.dispatchEvent(new CustomEvent("fanpage:motion-active"));
     const x = Math.max(-1, Math.min(1, gravity.y / 7));
     const y = Math.max(-1, Math.min(1, gravity.x / 7));
     onTilt(x, y);

@@ -42,6 +42,9 @@ export const setupIntroExperience = () => {
 
       if (previewedWork !== item) {
         event.preventDefault();
+        window.dispatchEvent(
+          new CustomEvent("fanpage:media-audio", { detail: { active: false } }),
+        );
         stopPreview(previewedWork);
         previewedWork = item;
         item.classList.add("is-previewing");
