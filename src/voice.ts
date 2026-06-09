@@ -149,10 +149,10 @@ export const setupVoiceExperience = () => {
     "water",
   );
 
-  continueButton.addEventListener("click", async () => {
-    await requestMotionPermission();
+  continueButton.addEventListener("click", () => {
     stopAudio();
     app.classList.add("is-third-page");
+    void requestMotionPermission();
   });
 
   const render = () => {

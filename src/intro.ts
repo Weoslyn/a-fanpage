@@ -161,10 +161,18 @@ export const setupIntroExperience = () => {
     if (!granted) setMotionState("denied");
   });
   window.addEventListener("fanpage:motion-permission", (event) => {
-    const granted = Boolean(
-      (event as CustomEvent<{ granted?: boolean }>).detail?.granted,
-    );
+    const detail = (
+      event as CustomEvent<{
+        granted?: boolean;
+        requiresPrompt?: boolean;
+      }>
+    ).detail;
+    const granted = Boolean(detail?.granted);
     setMotionState(granted ? "waiting" : "denied");
+    if (granted && detail?.requiresPrompt === false && motionLabel && motionMeta) {
+      motionLabel.textContent = "晃动设备以启用视角";
+      motionMeta.textContent = "CHROME · SENSOR READY";
+    }
   });
   window.addEventListener("fanpage:motion-active", () => {
     setMotionState("active");

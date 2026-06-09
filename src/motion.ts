@@ -8,33 +8,34 @@ type PermissionAwareDeviceMotionEvent = typeof DeviceMotionEvent & {
 
 export const requestMotionPermission = async () => {
   try {
+    const permissionRequests: Promise<"granted" | "denied">[] = [];
+
     if (typeof DeviceOrientationEvent !== "undefined") {
       const orientationEvent =
         DeviceOrientationEvent as PermissionAwareDeviceOrientationEvent;
       if (typeof orientationEvent.requestPermission === "function") {
-        const granted = (await orientationEvent.requestPermission()) === "granted";
-        window.dispatchEvent(
-          new CustomEvent("fanpage:motion-permission", { detail: { granted } }),
-        );
-        return granted;
+        permissionRequests.push(orientationEvent.requestPermission());
       }
     }
 
     if (typeof DeviceMotionEvent !== "undefined") {
       const motionEvent = DeviceMotionEvent as PermissionAwareDeviceMotionEvent;
       if (typeof motionEvent.requestPermission === "function") {
-        const granted = (await motionEvent.requestPermission()) === "granted";
-        window.dispatchEvent(
-          new CustomEvent("fanpage:motion-permission", { detail: { granted } }),
-        );
-        return granted;
+        permissionRequests.push(motionEvent.requestPermission());
       }
     }
 
+    const results = await Promise.all(permissionRequests);
+    const granted = results.every((result) => result === "granted");
     window.dispatchEvent(
-      new CustomEvent("fanpage:motion-permission", { detail: { granted: true } }),
+      new CustomEvent("fanpage:motion-permission", {
+        detail: {
+          granted,
+          requiresPrompt: permissionRequests.length > 0,
+        },
+      }),
     );
-    return true;
+    return granted;
   } catch {
     window.dispatchEvent(
       new CustomEvent("fanpage:motion-permission", { detail: { granted: false } }),
@@ -73,9 +74,11 @@ export const subscribeToDeviceTilt = (
   };
 
   window.addEventListener("deviceorientation", handleOrientation, true);
+  window.addEventListener("deviceorientationabsolute", handleOrientation, true);
   window.addEventListener("devicemotion", handleMotion, true);
   return () => {
     window.removeEventListener("deviceorientation", handleOrientation, true);
+    window.removeEventListener("deviceorientationabsolute", handleOrientation, true);
     window.removeEventListener("devicemotion", handleMotion, true);
   };
 };
