@@ -2258,6 +2258,25 @@ a.media-strip:hover {
   align-items: start;
 }
 
+.fan-section-title {
+  grid-column: 1 / -1;
+  margin: 12px 0 0;
+  border-bottom: 1px solid rgb(238 240 237 / 34%);
+  padding: 0 0 12px;
+  color: rgb(242 244 241 / 88%);
+  font: 600 11px/1.2 "DM Mono", monospace;
+  letter-spacing: .14em;
+}
+
+.fan-section-title span {
+  margin-right: 9px;
+  font-size: 15px;
+}
+
+.fan-section-title--audio {
+  margin-top: 76px;
+}
+
 .fan-gallery,
 .fan-gallery-lower {
   display: contents;
@@ -2282,6 +2301,18 @@ a.media-strip:hover {
 
 .fan-works-grid .fan-work:nth-child(4n + 3) {
   --work-offset: 72px;
+}
+
+.fan-work--reserved {
+  border-style: dashed;
+  color: rgb(239 241 238 / 42%);
+  background: rgb(47 50 48 / 8%);
+  pointer-events: none;
+}
+
+.fan-work--reserved::before,
+.fan-work--reserved::after {
+  content: none;
 }
 
 .fan-works-grid .fan-work:nth-child(4n + 4) {
@@ -2736,6 +2767,15 @@ a.media-strip:hover {
     left: 10px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+  }
+
+  .fan-section-title {
+    padding-bottom: 10px;
+    font-size: 9px;
+  }
+
+  .fan-section-title--audio {
+    margin-top: 48px;
   }
 
   .fan-works-grid .fan-work {

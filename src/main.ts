@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { APP_CONFIG, GESTURE_CONFIG } from "./config";
 import { setupIntroExperience } from "./intro";
 import { setupMusicExperience } from "./music";
+import { requestMotionPermission } from "./motion";
 import { setupVoiceExperience } from "./voice";
 import { compositeFragmentShader, fullscreenVertexShader } from "./shaders";
 import "./style.css";
@@ -252,6 +253,7 @@ const init = async () => {
         velocity >= GESTURE_CONFIG.flickVelocity);
 
     if (shouldOpen) {
+      void requestMotionPermission();
       completed = true;
       app.classList.add("is-revealed");
       hint.textContent = "已揭开隐藏图层";

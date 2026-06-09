@@ -1,4 +1,4 @@
-import { requestMotionPermission, subscribeToDeviceTilt } from "./motion";
+import { subscribeToDeviceTilt } from "./motion";
 import { setupRain } from "./rain";
 import { setupFluidCursor } from "./fluid";
 
@@ -43,7 +43,6 @@ export const setupVoiceExperience = () => {
   );
   const audio = new Audio();
   let activeButton: HTMLButtonElement | null = null;
-  let motionPermissionRequested = false;
   const tilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
 
   const stopAudio = () => {
@@ -150,11 +149,7 @@ export const setupVoiceExperience = () => {
     "water",
   );
 
-  continueButton.addEventListener("click", async () => {
-    if (!motionPermissionRequested) {
-      motionPermissionRequested = true;
-      await requestMotionPermission();
-    }
+  continueButton.addEventListener("click", () => {
     stopAudio();
     app.classList.add("is-third-page");
   });
