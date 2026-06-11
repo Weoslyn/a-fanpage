@@ -21,6 +21,8 @@ export const setupVoiceExperience = () => {
   const continueButton =
     document.querySelector<HTMLButtonElement>("#voice-continue-button");
   const status = document.querySelector<HTMLElement>("#voice-status");
+  const motionPermission =
+    document.querySelector<HTMLButtonElement>("#motion-permission");
   const rainBack = document.querySelector<HTMLCanvasElement>("#rain-canvas-back");
   const rainFront = document.querySelector<HTMLCanvasElement>("#rain-canvas-front");
   const smokeBack = document.querySelector<HTMLCanvasElement>("#voice-smoke-back");
@@ -32,6 +34,7 @@ export const setupVoiceExperience = () => {
     !trackList ||
     !continueButton ||
     !status ||
+    !motionPermission ||
     !rainBack ||
     !rainFront ||
     !smokeBack
@@ -43,7 +46,57 @@ export const setupVoiceExperience = () => {
   );
   const audio = new Audio();
   let activeButton: HTMLButtonElement | null = null;
+  let motionRequested = false;
   const tilt = { x: 0, y: 0, targetX: 0, targetY: 0 };
+  const motionLabel = motionPermission.querySelector<HTMLElement>("span");
+  const motionMeta = motionPermission.querySelector<HTMLElement>("small");
+
+  const setMotionState = (
+    state: "ready" | "waiting" | "denied" | "active",
+  ) => {
+    motionPermission.classList.toggle("is-hidden", state === "active");
+    motionPermission.classList.toggle("is-denied", state === "denied");
+    if (!motionLabel || !motionMeta) return;
+
+    if (state === "waiting") {
+      motionLabel.textContent = "晃动设备以启用视角";
+      motionMeta.textContent = "WAITING FOR SENSOR";
+    } else if (state === "denied") {
+      motionLabel.textContent = "请允许动作与方向访问";
+      motionMeta.textContent = "TAP TO TRY AGAIN";
+    } else if (state === "active") {
+      motionLabel.textContent = "动态视角已启用";
+      motionMeta.textContent = "MOTION ACTIVE";
+    } else {
+      motionLabel.textContent = "启用动态视角";
+      motionMeta.textContent = "SAFARI / CHROME SENSOR";
+    }
+  };
+
+  motionPermission.addEventListener("click", async () => {
+    motionRequested = true;
+    setMotionState("waiting");
+    const granted = await requestMotionPermission();
+    if (!granted) setMotionState("denied");
+  });
+  window.addEventListener("fanpage:motion-permission", (event) => {
+    if (!motionRequested) return;
+    const detail = (
+      event as CustomEvent<{
+        granted?: boolean;
+        requiresPrompt?: boolean;
+      }>
+    ).detail;
+    const granted = Boolean(detail?.granted);
+    setMotionState(granted ? "waiting" : "denied");
+    if (granted && detail?.requiresPrompt === false && motionLabel && motionMeta) {
+      motionLabel.textContent = "晃动设备以启用视角";
+      motionMeta.textContent = "CHROME SENSOR READY";
+    }
+  });
+  window.addEventListener("fanpage:motion-active", () => {
+    if (motionRequested) setMotionState("active");
+  });
 
   const stopAudio = () => {
     audio.pause();
@@ -152,7 +205,6 @@ export const setupVoiceExperience = () => {
   continueButton.addEventListener("click", () => {
     stopAudio();
     app.classList.add("is-third-page");
-    void requestMotionPermission();
   });
 
   const render = () => {

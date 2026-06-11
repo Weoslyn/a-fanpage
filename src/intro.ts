@@ -1,6 +1,6 @@
 import { ARCHIVE_CONTENT, type ArchiveCategory } from "./config";
 import { setupFluidCursor } from "./fluid";
-import { requestMotionPermission, subscribeToDeviceTilt } from "./motion";
+import { subscribeToDeviceTilt } from "./motion";
 
 export const setupIntroExperience = () => {
   const fanWorks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".fan-work"));
@@ -81,8 +81,6 @@ export const setupIntroExperience = () => {
   const drawerClose = document.querySelector<HTMLButtonElement>("#drawer-close");
   const continueButton = document.querySelector<HTMLButtonElement>("#continue-button");
   const introBack = document.querySelector<HTMLButtonElement>("#intro-back");
-  const motionPermission =
-    document.querySelector<HTMLButtonElement>("#motion-permission");
   const continuationBack = document.querySelector<HTMLButtonElement>("#continuation-back");
   const continuationStage =
     document.querySelector<HTMLElement>("#continuation-stage");
@@ -109,7 +107,6 @@ export const setupIntroExperience = () => {
     !drawerClose ||
     !continueButton ||
     !introBack ||
-    !motionPermission ||
     !continuationBack ||
     !continuationStage ||
     !fanArchive ||
@@ -133,50 +130,6 @@ export const setupIntroExperience = () => {
   let width = 1;
   let height = 1;
   const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)");
-  const motionLabel = motionPermission.querySelector<HTMLElement>("span");
-  const motionMeta = motionPermission.querySelector<HTMLElement>("small");
-
-  const setMotionState = (
-    state: "ready" | "waiting" | "denied" | "active",
-  ) => {
-    motionPermission.classList.toggle("is-hidden", state === "active");
-    motionPermission.classList.toggle("is-denied", state === "denied");
-    if (!motionLabel || !motionMeta) return;
-
-    if (state === "waiting") {
-      motionLabel.textContent = "晃动设备以启用视角";
-      motionMeta.textContent = "WAITING FOR MOTION";
-    } else if (state === "denied") {
-      motionLabel.textContent = "请允许动作与方向访问";
-      motionMeta.textContent = "TAP TO TRY AGAIN";
-    } else {
-      motionLabel.textContent = "启用动态视角";
-      motionMeta.textContent = "ENABLE MOTION";
-    }
-  };
-
-  motionPermission.addEventListener("click", async () => {
-    setMotionState("waiting");
-    const granted = await requestMotionPermission();
-    if (!granted) setMotionState("denied");
-  });
-  window.addEventListener("fanpage:motion-permission", (event) => {
-    const detail = (
-      event as CustomEvent<{
-        granted?: boolean;
-        requiresPrompt?: boolean;
-      }>
-    ).detail;
-    const granted = Boolean(detail?.granted);
-    setMotionState(granted ? "waiting" : "denied");
-    if (granted && detail?.requiresPrompt === false && motionLabel && motionMeta) {
-      motionLabel.textContent = "晃动设备以启用视角";
-      motionMeta.textContent = "CHROME · SENSOR READY";
-    }
-  });
-  window.addEventListener("fanpage:motion-active", () => {
-    setMotionState("active");
-  });
 
   const resize = () => {
     width = stage.clientWidth;
